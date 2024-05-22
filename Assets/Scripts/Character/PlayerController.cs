@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
    public float moveSpeed;
    public LayerMask solidObjectsLayer;
+   public LayerMask interactableLayer;
 
    private bool isMoving;
    private Vector2 input;
@@ -44,6 +45,26 @@ public class PlayerController : MonoBehaviour
          }
 
          animator.SetBool("isMoving",isMoving);
+
+         if(Input.GetKeyDown(KeyCode.Z))
+                Interact();
+    
+    }
+    void Interact()
+    {
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var interactPos = transform.position + facingDir;
+        
+       
+         //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
+        //Debug.DrawRay(interactPos, transform.position, Color.red, 0.5f);
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, interactableLayer);
+        if (collider != null)
+        {
+            collider.GetComponent<Interactable>()?.Interact();
+            //Aquí voy a llamar a la interfaz Interactable, pero a la funcion que esta en NPCController void interact
+        }
     }
     IEnumerator Move(Vector3 targetPos)
     {
@@ -59,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-       if(Physics2D.OverlapCircle(targetPos, 0.2f,solidObjectsLayer) !=null)
+       if(Physics2D.OverlapCircle(targetPos, 0.2f,solidObjectsLayer | interactableLayer) !=null)
        {
         return false;
        }
