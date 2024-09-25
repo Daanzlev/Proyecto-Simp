@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  Name: Potacio
-  Text: Dialogo 1
+  Name: Izquierdin
+  Text: Hola!
+  Side: 1
+  Action: 1
   Next:
   - {fileID: 11400000, guid: dae2111c73b35044795e0b3f8d14f29e, type: 2}

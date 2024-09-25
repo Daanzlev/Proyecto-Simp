@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
   m_Name: 4
   m_EditorClassIdentifier: 
-  Name: Potacio
-  Text: Dialogo 4
+  Name: Derechin
+  Text: Xd
+  Side: 2
+  Action: 0
   Next: []
