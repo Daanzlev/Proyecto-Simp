@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Enemy 
 {
-    EnemyBase _base ;
-    int level;
+    public EnemyBase Base {get; set; }
+    public int Level {get; set; }
 
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
 
     public Enemy (EnemyBase pBase, int pLevel)
     {
-        _base = pBase;
-        level = pLevel;
-        HP = _base.MaxHP;
+        Base = pBase;
+        Level = pLevel;
+        HP = MaxHP;
 
         //Creación de Moves
         Moves= new List<Move>();
-        foreach(var move in _base.LearnableMoves)
+        foreach(var move in Base.LearnableMoves)
         {
-            if(move.Level <= level)
+            if(move.Level <= Level)
             {
                 Moves.Add(new Move(move.Base));
             }
@@ -35,31 +35,31 @@ public class Enemy
     
     public int Attack
     {
-        get { return Mathf.FloorToInt((_base.Attack * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5; }
     }
 
     public int Defense
     {
-        get { return Mathf.FloorToInt((_base.Defense * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5; }
     }
 
     public int SpAttack
     {
-        get { return Mathf.FloorToInt((_base.SpAttack * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5; }
     }
 
     public int SpDefense
     {
-        get { return Mathf.FloorToInt((_base.SpDefense * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5; }
     }
 
     public int Speed
     {
-        get { return Mathf.FloorToInt((_base.Speed * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5; }
     }
 
     public int MaxHP
     {
-        get { return Mathf.FloorToInt((_base.MaxHP * level) / 100f) + 10; }
+        get { return Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10; }
     }
 }
