@@ -182,7 +182,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 7743d3033b2def3408a3d035c8bec428, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -318,13 +318,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca4a008c7c261464a89ca606b7c054c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharacterIndex: {fileID: 11400000, guid: 1c632592bd19bde42826c43dae191b8c, type: 2}
+  ImageDistance: 500
+  AnimationDuration: 0.2
   ProgressKey: 274
   Text: {fileID: 1928574089}
   Name: {fileID: 2125450659}
   RightImage: {fileID: 522763322}
   LeftImage: {fileID: 323037635}
-  ImageDistance: 500
-  AnimationDuration: 0.2
+  Character_Left: 
+  Character_Right: 
 --- !u!1 &522763320
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +387,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 8f653e62ab90f404c998cbaef1535bde, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

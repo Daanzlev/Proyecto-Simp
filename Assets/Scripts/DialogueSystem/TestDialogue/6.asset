@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
-  m_Name: 3 1
+  m_Name: 6
   m_EditorClassIdentifier: 
-  Name: Mr. Money
-  Text: Supa dinero
+  Name: Minium
+  Text: Me gusta saltar
+  Title: 
+  Side: 2
+  Expresion: 0
+  Action: 2
   Next:
-  - {fileID: 11400000, guid: 138955a1df7acbb4494c0dee95ffe7c5, type: 2}
+  - {fileID: 11400000, guid: 010054f3ba9d9af46ba25759918feedb, type: 2}

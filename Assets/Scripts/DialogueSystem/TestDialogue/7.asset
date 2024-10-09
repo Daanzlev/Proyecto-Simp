@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
-  m_Name: 4 1
+  m_Name: 7
   m_EditorClassIdentifier: 
-  Name: Mr. Money
-  Text: winero...
-  Side: 0
-  Action: 0
-  Next: []
+  Name: Thundervolt
+  Text: Ola
+  Title: 
+  Side: 1
+  Expresion: 0
+  Action: 2
+  Next:
+  - {fileID: 11400000, guid: 600946e603f9cf442ac6d2397f3de45f, type: 2}

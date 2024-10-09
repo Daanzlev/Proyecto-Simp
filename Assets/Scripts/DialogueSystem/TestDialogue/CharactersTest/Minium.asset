@@ -9,14 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
-  m_Name: 2
+  m_Script: {fileID: 11500000, guid: 0f15a5ec0f27ae54286b18c541852517, type: 3}
+  m_Name: Minium
   m_EditorClassIdentifier: 
   Name: Minium
-  Text: ...
-  Title: 
-  Side: 2
-  Expresion: 0
-  Action: 3
-  Next:
-  - {fileID: 11400000, guid: da2c738d9c26f2d46a3d49a657258d43, type: 2}
+  Sprites:
+  - Expresion: 0
+    Sprite: {fileID: 21300000, guid: 7743d3033b2def3408a3d035c8bec428, type: 3}
+  - Expresion: 1
+    Sprite: {fileID: 21300000, guid: db3b5ee9dccbfd34a98b157be94e4f12, type: 3}

@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
-  m_Name: 2 1
+  m_Name: 5
   m_EditorClassIdentifier: 
-  Name: Mr. Money
-  Text: Yey dinero
+  Name: Duque
+  Text: Que hace
+  Title: 
+  Side: 1
+  Expresion: 1
+  Action: 3
   Next:
-  - {fileID: 11400000, guid: 33251aef193b0b14e9b765b9ff98fc05, type: 2}
+  - {fileID: 11400000, guid: b8913ea6b0d8ed6439331db08da7d66f, type: 2}

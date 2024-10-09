@@ -9,14 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
-  m_Name: 1
+  m_Script: {fileID: 11500000, guid: 0f15a5ec0f27ae54286b18c541852517, type: 3}
+  m_Name: Carro
   m_EditorClassIdentifier: 
   Name: Carro
-  Text: Hola!
-  Title: 
-  Side: 1
-  Expresion: 0
-  Action: 3
-  Next:
-  - {fileID: 11400000, guid: dae2111c73b35044795e0b3f8d14f29e, type: 2}
+  Sprites:
+  - Expresion: 0
+    Sprite: {fileID: 21300000, guid: 943aff714e02c874daea0158b62c67f5, type: 3}
+  - Expresion: 1
+    Sprite: {fileID: 21300000, guid: 9a25fdc4ceb071947b3efa53ac7d1ada, type: 3}
