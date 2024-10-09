@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Mr. Money
   Text: Amo el dinero
+  Side: 2
+  Action: 1
   Next:
   - {fileID: 11400000, guid: cb7bb073f4fe461499bc9a2a21e80f3c, type: 2}

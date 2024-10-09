@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: 4 1
   m_EditorClassIdentifier: 
   Name: Mr. Money
-  Text: winero
+  Text: winero...
+  Side: 0
+  Action: 0
   Next: []
