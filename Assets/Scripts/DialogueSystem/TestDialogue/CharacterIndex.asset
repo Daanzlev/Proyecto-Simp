@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: CharacterIndex
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueCharacterIndex
+  Characters:
+  - {fileID: 11400000, guid: 10fd8f312cfbc124bb7055f7df84c845, type: 2}
+  - {fileID: 11400000, guid: b73dfebfab5950d498151ce701b0f6db, type: 2}
+  - {fileID: 11400000, guid: 7dce5ac23ba396140b5f663fd139172d, type: 2}
+  - {fileID: 11400000, guid: 3a06b79c3f7dcdb41962d95cc67e8bf5, type: 2}
