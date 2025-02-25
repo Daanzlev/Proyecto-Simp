@@ -48,7 +48,7 @@ public class BattleSystem : MonoBehaviour
       dialogBox.EnableDialogText(false);
       dialogBox.EnableMoveSelector(true);
    }
-   private void Update()
+   public void HandleUpdate()
     {
         if (state == BattleState.PlayerAction)
         {

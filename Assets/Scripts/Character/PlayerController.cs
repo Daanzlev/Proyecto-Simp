@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     animator = GetComponent<Animator>();   
 }
 
-   private void Update()
+   public void HandleUpdate()
     {
          if (!isMoving)
          {
