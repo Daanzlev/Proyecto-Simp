@@ -1,13 +1,16 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
    public float moveSpeed;
-   public LayerMask solidObjectsLayer;
-   public LayerMask interactableLayer;
-   public LayerMask grassLayer;
+
+    /// 
+    /// GameController
+    public event Action OnEncountered;
+    /// 
 
    private bool isMoving;
    private Vector2 input;
@@ -60,7 +63,7 @@ public class PlayerController : MonoBehaviour
          //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
         //Debug.DrawRay(interactPos, transform.position, Color.red, 0.5f);
 
-        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, interactableLayer);
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.i.InteractableLayer);
         if (collider != null)
         {
             collider.GetComponent<Interactable>()?.Interact();
@@ -83,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-       if(Physics2D.OverlapCircle(targetPos, 0.2f,solidObjectsLayer | interactableLayer) !=null)
+       if(Physics2D.OverlapCircle(targetPos, 0.2f,GameLayers.i.SolidLayer | GameLayers.i.InteractableLayer) !=null)
        {
         return false;
        }
@@ -97,11 +100,13 @@ public class PlayerController : MonoBehaviour
 
     private void CheckForEncounters()
     {
-        if(Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, GameLayers.i.GrassLayer) != null)
         {
-            if(Random.Range(1,101) <= 10)
+            if(UnityEngine.Random.Range(1,101) <= 10)
             {
                 Debug.Log("Encountered a simp fight");
+                animator.SetBool("isMoving",false);
+                OnEncountered();
             }
         }
     }

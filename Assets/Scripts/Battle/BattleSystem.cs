@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum BattleState { Start, PlayerAction, PlayerMove, EnemyMove, Busy}
 public class BattleSystem : MonoBehaviour
@@ -10,6 +11,8 @@ public class BattleSystem : MonoBehaviour
    [SerializeField] BattleHud playerHud;
    [SerializeField] BattleHud enemyHud;
    [SerializeField] BattleDialogBox dialogBox;
+
+   public event Action <bool> OnEncountered;
 
     BattleState state;
     int currentAction;
