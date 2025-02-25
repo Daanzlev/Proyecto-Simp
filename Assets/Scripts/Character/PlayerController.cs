@@ -90,6 +90,11 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
+    private void OnMover()
+    {
+        //Physics2D.OverlapCircle(transform.position - new Vector3(0, offsetY), 0.2f, GameLayers.i.GrassLayer)
+    }
+
     private void CheckForEncounters()
     {
         if(Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
