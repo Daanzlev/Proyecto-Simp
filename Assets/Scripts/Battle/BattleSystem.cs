@@ -3,39 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum BattleState { Start, PlayerAction, PlayerMove, EnemyMove, Busy}
 public class BattleSystem : MonoBehaviour
 {
    [SerializeField] BattleUnit playerUnit;
    [SerializeField] BattleUnit enemyUnit;
    [SerializeField] BattleHud playerHud;
    [SerializeField] BattleHud enemyHud;
-   [SerializeField] BattleDialogBox dialogBox;
 
+<<<<<<< HEAD
    public event Action <bool> OnEncountered;
 
     BattleState state;
     int currentAction;
     int currentMove;
+=======
+>>>>>>> parent of 9ef0b65 (New Carpets 4 Art)
    private void Start()
    {
-        StartCoroutine(SetupBattle());
+        SetupBattle();
    }
 
-   public IEnumerator SetupBattle()
+   public void SetupBattle()
    {
         playerUnit.Setup();
         enemyUnit.Setup();
         playerHud.SetData(playerUnit.Enemy);
         enemyHud.SetData(enemyUnit.Enemy);
-
-        dialogBox.SetMoveNames(playerUnit.Enemy.Moves);
-
-       yield return dialogBox.TypeDialog( $"A wild {enemyUnit.Enemy.Base.Name} appeared. ");
-       yield return new WaitForSeconds(1f);
-
-       PlayerAction();
    }
+<<<<<<< HEAD
    void PlayerAction()
    {
      state = BattleState.PlayerAction;
@@ -115,4 +110,6 @@ public class BattleSystem : MonoBehaviour
         }
         dialogBox.UpdateMoveSelection(currentMove, playerUnit.Enemy.Moves[currentAction]);
     }
+=======
+>>>>>>> parent of 9ef0b65 (New Carpets 4 Art)
 }
