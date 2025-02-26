@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  Name: Minium
+  Name: Derechin
   Text: ...
-  Title: 
   Side: 2
-  Expresion: 0
-  Action: 3
+  Action: 1
   Next:
   - {fileID: 11400000, guid: da2c738d9c26f2d46a3d49a657258d43, type: 2}

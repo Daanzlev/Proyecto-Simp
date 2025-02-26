@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  Name: Carro
+  Name: Izquierdin
   Text: Hola!
-  Title: 
   Side: 1
-  Expresion: 0
-  Action: 3
+  Action: 1
   Next:
   - {fileID: 11400000, guid: dae2111c73b35044795e0b3f8d14f29e, type: 2}
+  - {fileID: 11400000, guid: dd4a26c9b7d2b854bb891439704eb251, type: 2}
+  - {fileID: 11400000, guid: 138955a1df7acbb4494c0dee95ffe7c5, type: 2}

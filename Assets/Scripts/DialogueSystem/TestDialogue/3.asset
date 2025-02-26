@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78394ae4a5ca98a43980dcaf0426276a, type: 3}
   m_Name: 3
   m_EditorClassIdentifier: 
-  Name: Carro
+  Name: Izquierdin
   Text: Pues no. Adios.
-  Title: 
   Side: 1
-  Expresion: 1
-  Action: 4
+  Action: 2
   Next:
   - {fileID: 11400000, guid: aa2cf1ab2a5ac164ea04a1013dba95b3, type: 2}
