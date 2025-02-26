@@ -1,16 +1,13 @@
 using System.Collections;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
    public float moveSpeed;
-
-    /// 
-    /// GameController
-    public event Action OnEncountered;
-    /// 
+   public LayerMask solidObjectsLayer;
+   public LayerMask interactableLayer;
+   public LayerMask grassLayer;
 
    private bool isMoving;
    private Vector2 input;
@@ -22,7 +19,7 @@ public class PlayerController : MonoBehaviour
     animator = GetComponent<Animator>();   
 }
 
-   public void HandleUpdate()
+   private void Update()
     {
          if (!isMoving)
          {
@@ -63,7 +60,7 @@ public class PlayerController : MonoBehaviour
          //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
         //Debug.DrawRay(interactPos, transform.position, Color.red, 0.5f);
 
-        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.i.InteractableLayer);
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, interactableLayer);
         if (collider != null)
         {
             collider.GetComponent<Interactable>()?.Interact();
@@ -86,27 +83,20 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-       if(Physics2D.OverlapCircle(targetPos, 0.2f,GameLayers.i.SolidLayer | GameLayers.i.InteractableLayer) !=null)
+       if(Physics2D.OverlapCircle(targetPos, 0.2f,solidObjectsLayer | interactableLayer) !=null)
        {
         return false;
        }
         return true;
     }
 
-    private void OnMover()
-    {
-        //Physics2D.OverlapCircle(transform.position - new Vector3(0, offsetY), 0.2f, GameLayers.i.GrassLayer)
-    }
-
     private void CheckForEncounters()
     {
-        if(Physics2D.OverlapCircle(transform.position, 0.2f, GameLayers.i.GrassLayer) != null)
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
         {
-            if(UnityEngine.Random.Range(1,101) <= 10)
+            if(Random.Range(1,101) <= 10)
             {
                 Debug.Log("Encountered a simp fight");
-                animator.SetBool("isMoving",false);
-                OnEncountered();
             }
         }
     }
