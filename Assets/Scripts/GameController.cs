@@ -5,7 +5,8 @@ using UnityEngine;
 public enum GameState
 {
     FreeRoam,
-    Battle
+    Battle,
+    Cutscene
 }
 
 public class GameController : MonoBehaviour
@@ -18,9 +19,17 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         playerController.OnEncountered += StartBattle;
-        //battleSystem.OnBattleOver += EndBattle;
+        battleSystem.OnBattleOver += EndBattle;
 
-        //DialogManager.Instance.OnShowDialog += () =>
+        playerController.OnEnterTrainersView += (Collider2D trainerCollider) =>
+        {
+            var  trainer = trainerCollider.GetComponentInParent<TrainerController>();
+            if (trainer != null)
+            {
+                state = GameState.Cutscene;
+                StartCoroutine(trainer.TriggerTrainerBattle(playerController));
+            }
+        };
     }
 
     void StartBattle()
@@ -29,16 +38,19 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
         //playerController.enabled = false;
-        //battleSystem.StartBattle();
+
+        var playerParty = playerController.GetComponent<SimpParty>();
+        var wildSimp = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildSimp();
+        battleSystem.StartBattle(playerParty, wildSimp);
     }
 
-    /*void EndBattle(bool playerHasWon)
+    void EndBattle(bool won)
     {
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);
         //playerController.enabled = true;
-    }*/
+    }
     private void Update()
     {
         if (state == GameState.FreeRoam)

@@ -6,20 +6,6 @@ public class NPC : MonoBehaviour, Interactable
 {
     //public string[] dialogue;
     //public string name;
-    /* TEST Sprites Animation
-    [SerializeField] List<Sprite> sprites;
-
-    SpriteAnimator spriteAnimator;
-
-    private void Start()
-    {
-        spriteAnimator = new SpriteAnimator(sprites, GetComponent<SpriteRenderer>());
-        spriteAnimator.Start();
-    }
-    private void Update()
-    {
-        spriteAnimator.HandleUpdate();
-    }*/
 
 
     //NPC Walkable
@@ -45,16 +31,17 @@ public class NPC : MonoBehaviour, Interactable
     {
         if (state == NPCState.Idle)
         {
-            idleTimer -= Time.deltaTime;
-            if (idleTimer < timeBTWPattern)
+            idleTimer += Time.deltaTime;
+            if (idleTimer > timeBTWPattern)
             {
-                idleTimer = Random.Range(1f, 4f);
+                idleTimer = 0f;
                 if (movementPattern.Count > 0)
                 {
-                    state = NPCState.Walking;
+                    //StartCoroutine(character.Move(new Vector2(2, 0)));
+                    //state = NPCState.Walking;
                     StartCoroutine(Walk());
                 }
-                StartCoroutine(character.Move(new Vector2(2, 0)));
+                
             }
         }
         character.HandleUpdate();
@@ -62,8 +49,16 @@ public class NPC : MonoBehaviour, Interactable
     IEnumerator Walk()
     {
         state = NPCState.Walking;
+
+        var oldPos = transform.position;
+
         yield  return character.Move(movementPattern[currentPattern]);
-        currentPattern = (currentPattern + 1) % movementPattern.Count;
+
+        if(transform.position != oldPos)
+        {
+            currentPattern = (currentPattern + 1) % movementPattern.Count;
+        }
+        
         state = NPCState.Idle;
         
     }

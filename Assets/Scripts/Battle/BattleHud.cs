@@ -9,10 +9,17 @@ public class BattleHud : MonoBehaviour
     [SerializeField] Text levelText;
     [SerializeField] HPBar hpBar;
 
-    public void SetData(Enemy enemy)
+    Simp _simp;
+    public void SetData(Simp simp)
     {
-        nameText.text= enemy.Base.Name;
-        levelText.text= "Lvl " + enemy.Level;
-        hpBar.SetHP((float) enemy.HP / enemy.MaxHP);
+        _simp = simp;
+        nameText.text= simp.Base.Name;
+        levelText.text= "Lvl " + simp.Level;
+        hpBar.SetHP((float) simp.HP / simp.MaxHP);
+    }
+
+    public IEnumerator UpdateHP()
+    {
+        yield return hpBar.SetHPSmooth((float) _simp.HP / _simp.MaxHP);
     }
 }
