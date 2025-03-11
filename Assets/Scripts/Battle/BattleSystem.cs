@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.ComponentModel.Design;
 
-public enum BattleState { Start, PlayerAction, PlayerMove, SimpMove, Busy}
-public class BattleSystem : MonoBehaviour
-{
-   [SerializeField] BattleUnit playerUnit;
-   [SerializeField] BattleUnit enemyUnit;
-   [SerializeField] BattleHud playerHud;
-   [SerializeField] BattleHud enemyHud;
-   [SerializeField] BattleDialogBox dialogBox;
-   [SerializeField] PartyScreen partyScreen;
+public enum BattleState { Start, ActionSelection, MoveSelection, PerformMove, Busy, PartyScreen, BattleOver }
 
-   public event Action<bool> OnBattleOver;
+public class BattleSystem : MonoBehaviour {
 
-  
+    /* -------------------------------------------------------
+    >>>>>>>>> VARIABLES
+    -------------------------------------------------------  */
+
+    // UI
+    [SerializeField] BattleUnit playerUnit;
+    [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] BattleDialogBox dialogBox;
+    [SerializeField] PartyScreen partyScreen;
+
+    public event Action<bool> OnBattleOver;
+
     BattleState state;
     int currentAction;
     int currentMove;
@@ -24,16 +28,23 @@ public class BattleSystem : MonoBehaviour
     SimpParty trainerParty;
     Simp wildSimp;
 
-    bool isTrainerBattle =false;
+    bool isTrainerBattle = false;
     PlayerController player;
     TrainerController trainer;
 
-   public void StartBattle(SimpParty playerParty, Simp wildSimp)
-   {
+
+
+    /* -------------------------------------------------------
+    >>>>>>>>> METHODS
+    -------------------------------------------------------  */
+
+    public void StartBattle(SimpParty playerParty, Simp wildSimp) {
+
         this.playerParty = playerParty;
         this.wildSimp = wildSimp;
         StartCoroutine(SetupBattle());
-   }
+
+    }
 
     /*public void StartTrainerBattle(SimpParty playerParty, Simp trainerParty)
    {
@@ -45,226 +56,238 @@ public class BattleSystem : MonoBehaviour
         trainer = trainerParty.GetComponent<TrainerController>();
         StartCoroutine(SetupBattle());
    }*/
-   public IEnumerator SetupBattle()
-   {
-    
+
+    // Coroutine that sets up the battle
+    public IEnumerator SetupBattle() {
+
         playerUnit.Setup(playerParty.GetHealthySimp());
         enemyUnit.Setup(wildSimp);
-        playerHud.SetData(playerUnit.Simp);
-        enemyHud.SetData(enemyUnit.Simp);
 
         partyScreen.Init();
 
         dialogBox.SetMoveNames(playerUnit.Simp.Moves);
 
-        yield return dialogBox.TypeDialog( $"A wild {enemyUnit.Simp.Base.Name} appeared. ");
-        
+        yield return dialogBox.TypeDialog($"A wild {enemyUnit.Simp.Base.Name} appeared. ");
 
-       PlayerAction();
-   }
-   void PlayerAction()
-   {
-     state = BattleState.PlayerAction;
-     StartCoroutine(dialogBox.TypeDialog("Choose an action"));
-     dialogBox.EnableActionSelector(true);
-   }
+        ActionSelection();
 
-    void OpenPartyScreen()
-    {
+    }
+
+    void ActionSelection() {
+
+        state = BattleState.ActionSelection;
+        StartCoroutine(dialogBox.TypeDialog("Choose an action"));
+        dialogBox.EnableActionSelector(true);
+
+    }
+
+    void OpenPartyScreen() {
+
         partyScreen.SetPartyData(playerParty.Simps);
         partyScreen.gameObject.SetActive(true);
+
     }
-  
-    void PlayerMove()
-  {
-    state = BattleState.PlayerMove;
-    dialogBox.EnableActionSelector(false);
-    dialogBox.EnableDialogText(false);
-    dialogBox.EnableMoveSelector(true);
 
-  }
-    IEnumerator PerformPlayerMove()
-    {
-      //Player Attack
-      state = BattleState.Busy;
-      var move = playerUnit.Simp.Moves[currentMove];
-      move.PP--;
-      yield return dialogBox.TypeDialog($"{playerUnit.Simp.Base.Name} used {move.Base.Name}");
+    void MoveSelection() {
 
-      playerUnit.PlayAtackAnimation();
-      yield return new WaitForSeconds(1f);
+        state = BattleState.MoveSelection;
+        dialogBox.EnableActionSelector(false);
+        dialogBox.EnableDialogText(false);
+        dialogBox.EnableMoveSelector(true);
 
-      //Player Hit
-      enemyUnit.PlayHitAnimation();
-      yield return new WaitForSeconds(1f);
-
-      var damageDetails = enemyUnit.Simp.TakeDamage(move, playerUnit.Simp);
-      yield return enemyHud.UpdateHP();
-      yield return ShowDamageDetails(damageDetails);
-
-      if (damageDetails.Fainted)
-      {
-          yield return dialogBox.TypeDialog($"{enemyUnit.Simp.Base.Name} fainted");
-          enemyUnit.PlayFaintAnimation();
-
-          yield return new WaitForSeconds(2f);
-          OnBattleOver(true);
-      }
-      else
-      {
-          StartCoroutine(EnemyMove());
-      }
     }
-    IEnumerator EnemyMove()
-    {
 
-      //Enemy Attack
-        state = BattleState.SimpMove;
-        var move = enemyUnit.Simp.GetRandomMove();
-        move.PP--;
-        yield return dialogBox.TypeDialog($"{enemyUnit.Simp.Base.Name} used {move.Base.Name}");
+    void BattleOver(bool win) {
 
-        enemyUnit.PlayAtackAnimation();
-        yield return new WaitForSeconds(1f);
+        state = BattleState.BattleOver;
+        OnBattleOver(win);
 
-        //Enemy Hit
-        playerUnit.PlayHitAnimation();
-        yield return new WaitForSeconds(1f);
-        var damageDetails = playerUnit.Simp.TakeDamage(move, enemyUnit.Simp);
-        yield return playerHud.UpdateHP();
-        yield return ShowDamageDetails(damageDetails);
+    }
 
+    void CheckForBattleOver(BattleUnit faintedUnit) {
 
-        if (damageDetails.Fainted)
-        {
-            yield return dialogBox.TypeDialog($"{playerUnit.Simp.Base.Name} fainted");
-            playerUnit.PlayFaintAnimation();
-            yield return new WaitForSeconds(2f);
+        //If player SIMP fainted
+        if (faintedUnit.IsPlayerUnit) {
+
             var nextSimp = playerParty.GetHealthySimp();
-            if (nextSimp != null)
-            {
-                playerUnit.Setup(nextSimp);
-                playerHud.SetData(nextSimp);
 
-                dialogBox.SetMoveNames(nextSimp.Moves);
-
-                yield return dialogBox.TypeDialog( $"Go {nextSimp.Base.Name}!");
-        
-                PlayerAction();
-            }
-            else
-            {
-                OnBattleOver(false);
-            }
-        }
-        else
-        {
-            PlayerAction();
-        }
-    }
-   IEnumerator ShowDamageDetails(DamageDetails damageDetails)
-   {
-      if (damageDetails.Critical > 1f)
-          yield return dialogBox.TypeDialog("A critical hit!");
-
-      if (damageDetails.Type > 1f)
-          yield return dialogBox.TypeDialog("It's super effective!");
-      else if (damageDetails.Type < 1f)
-          yield return dialogBox.TypeDialog("It's not very effective!");
-
-   }
-   public void HandleUpdate()
-    {
-        if (state == BattleState.PlayerAction)
-        {
-            HandleActionSelection();
-        }
-        else if (state == BattleState.PlayerMove)
-        {
-            HandleMoveSelection();
-        }
-    }
-    void HandleActionSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            ++currentAction;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            --currentAction;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            currentAction += 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            currentAction -= 2;
-        }
-        
-        currentAction = Mathf.Clamp(currentAction, 0, 3);
-
-        dialogBox.UpdateActionSelection(currentAction);
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (currentAction == 0)
-            {
-                //Fight
-                PlayerMove();
-            }
-            else if (currentAction == 1)
-            {
-                //Bag
-            }
-            else if (currentAction == 2)
-            {
-                //Simp
+            //If there is another SIMP
+            if (nextSimp != null) {
                 OpenPartyScreen();
             }
-            else if (currentAction == 3)
-            {
-                //Run
+            else {
+                BattleOver(false);
             }
+
         }
+        //If enemy SIMP fainted
+        else {
+            BattleOver(true);
+        }
+
     }
-    void HandleMoveSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
+
+    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move) {
+
+        move.PP--;
+        yield return dialogBox.TypeDialog($"{sourceUnit.Simp.Base.Name} used {move.Base.Name}");
+
+        sourceUnit.PlayAtackAnimation();
+        yield return new WaitForSeconds(1f);
+
+        //Player Hit
+        targetUnit.PlayHitAnimation();
+        yield return new WaitForSeconds(1f);
+
+        var damageDetails = targetUnit.Simp.TakeDamage(move, sourceUnit.Simp);
+        yield return targetUnit.Hud.UpdateHP();
+        yield return ShowDamageDetails(damageDetails);
+
+        if (damageDetails.Fainted) {
+
+            yield return dialogBox.TypeDialog($"{targetUnit.Simp.Base.Name} fainted");
+            targetUnit.PlayFaintAnimation();
+
+            yield return new WaitForSeconds(2f);
+
+            CheckForBattleOver(targetUnit);
+
+        }
+
+    }
+
+    IEnumerator PlayerMove() {
+
+        //Player Attack
+        state = BattleState.PerformMove;
+        var move = playerUnit.Simp.Moves[currentMove];
+
+        yield return RunMove(playerUnit, enemyUnit, move);
+
+        //If enemy SIMP has not fainted
+        if (state == BattleState.PerformMove) {
+            StartCoroutine(EnemyMove());
+        }
+
+    }
+
+    IEnumerator EnemyMove() {
+
+        //Enemy Attack
+        state = BattleState.PerformMove;
+        var move = enemyUnit.Simp.GetRandomMove();
+
+        yield return RunMove(enemyUnit, playerUnit, move);
+
+        //If player SIMP has not fainted
+        if (state == BattleState.PerformMove) {
+            ActionSelection();
+        }
+
+    }
+
+    IEnumerator ShowDamageDetails(DamageDetails damageDetails) {
+
+        if (damageDetails.Critical > 1f)
+            yield return dialogBox.TypeDialog("A critical hit!");
+
+        if (damageDetails.Type > 1f)
+            yield return dialogBox.TypeDialog("It's super effective!");
+        else if (damageDetails.Type < 1f)
+            yield return dialogBox.TypeDialog("It's not very effective!");
+
+    }
+
+    public void HandleUpdate() {
+
+        if (state == BattleState.ActionSelection) {
+            HandleActionSelection();
+        }
+        else if (state == BattleState.MoveSelection) {
+            HandleMoveSelection();
+        }
+
+    }
+
+    void HandleActionSelection() {
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))  {
+            ++currentAction;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            --currentAction;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            currentAction += 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            currentAction -= 2;
+        }
+
+        currentAction = Mathf.Clamp(currentAction, 0, 3);
+        dialogBox.UpdateActionSelection(currentAction);
+
+        if (Input.GetKeyDown(KeyCode.Z)) {
+
+            //Fight
+            if (currentAction == 0) {
+                MoveSelection();
+            }
+
+            //Bag            
+            else if (currentAction == 1) {
+                //In progress
+            }
+
+            //SIMP party
+            else if (currentAction == 2) {
+                OpenPartyScreen();
+            }
+
+            //Run
+            else if (currentAction == 3)  {
+                //In progress
+            }
+
+        }
+
+    }
+
+    void HandleMoveSelection() {
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
             ++currentMove;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             --currentMove;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
             currentMove += 2;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            currentMove-= 2;
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            currentMove -= 2;
         }
 
         currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Simp.Moves.Count - 1);
-
         dialogBox.UpdateMoveSelection(currentMove, playerUnit.Simp.Moves[currentMove]);
 
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
+        if (Input.GetKeyDown(KeyCode.Z)) {
+
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            StartCoroutine(PerformPlayerMove());
+            StartCoroutine(PlayerMove());
+
         }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
+        else if (Input.GetKeyDown(KeyCode.X)) {
+
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableActionSelector(true);
-           PlayerAction();
+            ActionSelection();
+
         }
+
     }
 
     //MISSING IEnuamerator PerformEnemyMove()
+
 }
