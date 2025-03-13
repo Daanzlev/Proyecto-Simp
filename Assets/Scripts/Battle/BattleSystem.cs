@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.ComponentModel.Design;
+using UnityEngine.UI;
 
 public enum BattleState { Start, ActionSelection, MoveSelection, PerformMove, Busy, PartyScreen, BattleOver }
 
-public class BattleSystem : MonoBehaviour {
 
+
+public class BattleSystem : MonoBehaviour
+{
     /* -------------------------------------------------------
-    >>>>>>>>> VARIABLES
-    -------------------------------------------------------  */
-
+>>>>>>>>> VARIABLES
+-------------------------------------------------------  */
     // UI
     [SerializeField] BattleUnit playerUnit;
-    [SerializeField] BattleUnit enemyUnit;
-    [SerializeField] BattleDialogBox dialogBox;
-    [SerializeField] PartyScreen partyScreen;
+   [SerializeField] BattleUnit enemyUnit;
+   [SerializeField] BattleHud playerHud;
+   [SerializeField] BattleHud enemyHud;
+   [SerializeField] BattleDialogBox dialogBox;
+   [SerializeField] PartyScreen partyScreen;
+   [SerializeField] Image playerImage;
+   [SerializeField] Image trainerImage;
+
 
     public event Action<bool> OnBattleOver;
 
@@ -46,7 +53,7 @@ public class BattleSystem : MonoBehaviour {
 
     }
 
-    /*public void StartTrainerBattle(SimpParty playerParty, Simp trainerParty)
+    public void StartTrainerBattle(SimpParty playerParty, SimpParty trainerParty)
    {
         this.playerParty = playerParty;
         this.trainerParty = trainerParty;
@@ -55,19 +62,53 @@ public class BattleSystem : MonoBehaviour {
         player = playerParty.GetComponent<PlayerController>();
         trainer = trainerParty.GetComponent<TrainerController>();
         StartCoroutine(SetupBattle());
-   }*/
+   }
+   public IEnumerator SetupBattle()
+   {
+        playerUnit.Clear();
+        enemyUnit.Clear();
 
-    // Coroutine that sets up the battle
-    public IEnumerator SetupBattle() {
+        if (!isTrainerBattle)
+        {
+            //Wild Pokemon Battle
+            playerUnit.Setup(playerParty.GetHealthySimp());
+            enemyUnit.Setup(wildSimp);
 
-        playerUnit.Setup(playerParty.GetHealthySimp());
-        enemyUnit.Setup(wildSimp);
+            dialogBox.SetMoveNames(playerUnit.Simp.Moves);
+
+            yield return dialogBox.TypeDialog($"A wild {enemyUnit.Simp.Base.Name} appeared. ");
+        }
+        else
+        {
+            //Trainer Battle
+
+            //Show Trainer and player sprites
+            playerUnit.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(false);
+
+            playerImage.gameObject.SetActive(true);
+            trainerImage.gameObject.SetActive(true);
+            playerImage.sprite = player.Sprite;
+            trainerImage.sprite = trainer.Sprite;
+
+            yield return dialogBox.TypeDialog($"{trainer.Name} wants to battle");
+
+            //Send out first pokemon of the trainer
+            trainerImage.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(true);
+            var enemySimp = trainerParty.GetHealthySimp();
+            //enemySimp.Setup(enemySimp);
+            yield return dialogBox.TypeDialog($"{trainer.Name} wants to battle");
+
+
+            //Send out first pokemon of the player
+
+        }
+
+        //playerHud.SetData(playerUnit.Simp);
+        //enemyHud.SetData(enemyUnit.Simp);
 
         partyScreen.Init();
-
-        dialogBox.SetMoveNames(playerUnit.Simp.Moves);
-
-        yield return dialogBox.TypeDialog($"A wild {enemyUnit.Simp.Base.Name} appeared. ");
 
         ActionSelection();
 

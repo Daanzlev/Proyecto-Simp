@@ -14,7 +14,16 @@ public class GameController : MonoBehaviour
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
+
     GameState state;
+
+    public static GameController Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+        //ConditionsDB.Init();
+    }
 
     private void Start()
     {
@@ -42,6 +51,19 @@ public class GameController : MonoBehaviour
         var playerParty = playerController.GetComponent<SimpParty>();
         var wildSimp = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildSimp();
         battleSystem.StartBattle(playerParty, wildSimp);
+    }
+
+    public void StartTrainerBattle(TrainerController trainer)
+    {
+        state = GameState.Battle;
+        battleSystem.gameObject.SetActive(true);
+        worldCamera.gameObject.SetActive(false);
+        //playerController.enabled = false;
+
+        var playerParty = playerController.GetComponent<SimpParty>();
+        var trainerParty = trainer.GetComponent<SimpParty>();
+
+        battleSystem.StartTrainerBattle(playerParty, trainerParty);
     }
 
     void EndBattle(bool won)

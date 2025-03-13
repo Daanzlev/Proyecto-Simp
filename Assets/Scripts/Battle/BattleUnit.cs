@@ -58,12 +58,17 @@ public class BattleUnit : MonoBehaviour {
         else  {
             image.sprite = Simp.Base.FrontSprite;
         }
-
+        hud.gameObject.SetActive(true);
         hud.SetData(simp);
 
         image.color = originalColor;
         PlayEnterAnimation();
 
+    }
+
+    public void Clear()
+    {
+        hud.gameObject.SetActive(false);
     }
 
     public void PlayEnterAnimation() {

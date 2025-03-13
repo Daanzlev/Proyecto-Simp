@@ -5,6 +5,9 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] string name;
+    [SerializeField] Sprite sprite;
+
     // Pattern  GameController to PlayerController and vice versa
     public event Action OnEncountered;
     public event Action<Collider2D> OnEnterTrainersView;
@@ -89,5 +92,15 @@ public class PlayerController : MonoBehaviour
             character.Animator.IsMoving =  false;
             OnEnterTrainersView?.Invoke(collider);
         }
+    }
+
+    public string Name
+    {
+        get => name;
+    }
+
+    public Sprite Sprite
+    {
+        get => sprite;
     }
 }
