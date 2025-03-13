@@ -75,7 +75,6 @@ public class BattleSystem : MonoBehaviour
             enemyUnit.Setup(wildSimp);
 
             dialogBox.SetMoveNames(playerUnit.Simp.Moves);
-
             yield return dialogBox.TypeDialog($"A wild {enemyUnit.Simp.Base.Name} appeared. ");
         }
         else
@@ -97,12 +96,17 @@ public class BattleSystem : MonoBehaviour
             trainerImage.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(true);
             var enemySimp = trainerParty.GetHealthySimp();
-            //enemySimp.Setup(enemySimp);
-            yield return dialogBox.TypeDialog($"{trainer.Name} wants to battle");
+            enemyUnit.Setup(enemySimp);
+            yield return dialogBox.TypeDialog($"{trainer.Name} send out {enemySimp.Base.Name}");
 
 
             //Send out first pokemon of the player
-
+            playerImage.gameObject.SetActive(false);
+            playerUnit.gameObject.SetActive(true);
+            var playerSimp = playerParty.GetHealthySimp();
+            playerUnit.Setup(playerSimp);
+            yield return dialogBox.TypeDialog($"Go {playerSimp.Base.Name}!");
+            dialogBox.SetMoveNames(playerUnit.Simp.Moves);
         }
 
         //playerHud.SetData(playerUnit.Simp);
@@ -161,9 +165,21 @@ public class BattleSystem : MonoBehaviour
             }
 
         }
-        //If enemy SIMP fainted
         else {
-            BattleOver(true);
+            if(isTrainerBattle)
+            {
+                BattleOver(true);
+            }
+            else
+            {
+                var nextSimp = trainerParty.GetHealthySimp();
+                if(nextSimp != null)
+                   StartCoroutine(SendNextTrainerSimp(nextSimp));
+                else
+                {
+                    BattleOver(true);
+                }
+            }
         }
 
     }
@@ -330,5 +346,13 @@ public class BattleSystem : MonoBehaviour
     }
 
     //MISSING IEnuamerator PerformEnemyMove()
+    IEnumerator SendNextTrainerSimp (Simp nextSimp)
+    {
+        state = BattleState.Busy;
+        enemyUnit.Setup(nextSimp);
+        yield return dialogBox.TypeDialog($"{trainer.Name} send out {nextSimp.Base.Name}");
+
+        //state = BattleState.RunningTurn;
+    }
 
 }
