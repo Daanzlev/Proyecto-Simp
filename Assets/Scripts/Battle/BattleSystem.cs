@@ -30,6 +30,7 @@ public class BattleSystem : MonoBehaviour
     BattleState state;
     int currentAction;
     int currentMove;
+    int currentMember;
 
     SimpParty playerParty;
     SimpParty trainerParty;
@@ -128,6 +129,7 @@ public class BattleSystem : MonoBehaviour
 
     void OpenPartyScreen() {
 
+        state = BattleState.PartyScreen;
         partyScreen.SetPartyData(playerParty.Simps);
         partyScreen.gameObject.SetActive(true);
 
@@ -263,6 +265,10 @@ public class BattleSystem : MonoBehaviour
         else if (state == BattleState.MoveSelection) {
             HandleMoveSelection();
         }
+        else if(state == BattleState.PartyScreen)
+        {
+            HandlePartySelection();
+        }
 
     }
 
@@ -346,6 +352,66 @@ public class BattleSystem : MonoBehaviour
     }
 
     //MISSING IEnuamerator PerformEnemyMove()
+    void HandlePartySelection()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            ++currentMember;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            --currentMember;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            currentMember += 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            currentMember -= 2;
+        }
+
+        currentMember = Mathf.Clamp(currentMember, 0, playerParty.Simps.Count - 1);
+
+        partyScreen.UpdateMemberSelection(currentMember);
+
+        if (Input.GetKeyDown(KeyCode.Z)) {
+
+            var selectedMember = playerParty.Simps[currentMember];
+            if(selectedMember.HP <= 0)
+            {
+                partyScreen.SetMessageText("You can't send out a fainted SIMP");
+                return;
+            }
+            if (selectedMember == playerUnit.Simp)
+            {
+                partyScreen.SetMessageText("You can't switch to the same SIMP");
+                return;
+            }
+
+            partyScreen.gameObject.SetActive(false);
+            state = BattleState.Busy;
+            StartCoroutine(SwitchSimp(selectedMember));
+        }
+        else if (Input.GetKeyDown (KeyCode.X))
+        {
+            partyScreen.gameObject.SetActive(false);
+            ActionSelection();
+        }
+    }
+
+    IEnumerator SwitchSimp (Simp newSimp)
+    {
+        yield return dialogBox.TypeDialog($"Come back  {playerUnit.Simp.Base.Name}!");
+        playerUnit.PlayFaintAnimation();
+        yield return new WaitForSeconds(2f);
+
+        //playerUnit.Setup(newSimp);
+        //playerHud.SetData(newSimp);
+        //dialogBox.SetMoveNames(newSimp.Moves);
+        yield return dialogBox.TypeDialog($"Go {newSimp.Base.Name}!");
+
+        StartCoroutine(EnemyMove());
+
+
+    }
+
     IEnumerator SendNextTrainerSimp (Simp nextSimp)
     {
         state = BattleState.Busy;

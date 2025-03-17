@@ -8,6 +8,7 @@ public class PartyMemberUI : MonoBehaviour
    [SerializeField] Text nameText;
     [SerializeField] Text levelText;
     [SerializeField] HPBar hpBar;
+    [SerializeField] Color selectedColor;
 
     Simp _simp;
     public void SetData(Simp simp)
@@ -16,6 +17,18 @@ public class PartyMemberUI : MonoBehaviour
         nameText.text= simp.Base.Name;
         levelText.text= "Lvl " + simp.Level;
         hpBar.SetHP((float) simp.HP / simp.MaxHP);
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (selected)
+        {
+            nameText.color = selectedColor;
+        }
+        else
+        {
+            nameText.color = Color.black;
+        }
     }
 
 }

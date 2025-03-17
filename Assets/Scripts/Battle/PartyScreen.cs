@@ -7,6 +7,7 @@ public class PartyScreen : MonoBehaviour
     [SerializeField] Text messageText;
     //[SerializeField] List<BattleHud> memberHuds;
     PartyMemberUI [] memberSlots;
+    List<Simp> simps;
 
     public void Init()
     {
@@ -15,6 +16,8 @@ public class PartyScreen : MonoBehaviour
 
     public void SetPartyData (List<Simp>simps)
     {
+        this.simps = simps;
+        
         for (int i = 0; i < memberSlots.Length; i++)
         {
             if (i < simps.Count)
@@ -31,4 +34,24 @@ public class PartyScreen : MonoBehaviour
         }
     }
 
+    public void UpdateMemberSelection(int selMember)
+    {
+        for (int i = 0; i < simps.Count; i++)
+        {
+            if (i == selMember)
+            {
+                memberSlots[i].SetSelected(true);
+            }
+            else
+            {
+                memberSlots[i].SetSelected(false);
+            }
+        }
+    }
+
+
+    public void SetMessageText(string message)
+    {
+        messageText.text = message;
+    }
 }
