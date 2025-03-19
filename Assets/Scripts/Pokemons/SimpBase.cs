@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* ----------------- MENU ----------------- */
 [CreateAssetMenu(fileName = "Simp", menuName = "Simp/Create new Simp")]
-public class SimpBase : ScriptableObject
-{
+
+public class SimpBase : ScriptableObject {
+
+    /* ----------------- ATRIBUTOS ----------------- */
     [SerializeField] string name;
     [TextArea]
     [SerializeField] string description;
@@ -25,94 +28,91 @@ public class SimpBase : ScriptableObject
     [SerializeField] int speed;
 
     [SerializeField] List<LearnableMove> learnableMoves;
-    public string Name 
-    {
+
+
+
+    /* ----------------- GETTERS ----------------- */
+    public string Name  {
         get { return name; }
     }
 
-    public string Description
-    {
+    public string Description {
         get { return description; }
     }
     
-    public Sprite FrontSprite
-    {
+    public Sprite FrontSprite {
         get { return frontSprite; }
     }
 
-    public Sprite BackSprite
-    {
+    public Sprite BackSprite {
         get { return backSprite; }
     }
 
-    public SimpType Type1
-    {
+    public SimpType Type1 {
         get { return type1; }
     }
 
-    public SimpType Type2
-    {
+    public SimpType Type2 {
         get { return type2; }
     }
 
-    public int MaxHP
-    {
+    public int MaxHP {
         get { return maxhp; }
     }
 
-    public int Attack
-    {
+    public int Attack {
         get { return attack; }
     }
 
-    public int Defense
-    {
+    public int Defense {
         get { return defense; }
     }
 
-    public int SpAttack
-    {
+    public int SpAttack {
         get { return spAttack; }
     }
 
-    public int SpDefense
-    {
+    public int SpDefense {
         get { return spDefense; }
     }
 
-    public int Speed
-    {
+    public int Speed {
         get { return speed; }
     }
 
-    public List<LearnableMove> LearnableMoves
-    {
+    public List<LearnableMove> LearnableMoves {
         get { return learnableMoves; }
     }
+
 }
 
+
+
+/* ----------------- MOVIMIENTOS ----------------- */
 [System.Serializable]
-public class LearnableMove
-{
+public class LearnableMove{
+
     [SerializeField] MoveBase moveBase;
     [SerializeField] int level;
 
-    public MoveBase Base
-    {
+    public MoveBase Base {
         get { return moveBase; }
     }
 
-    public int Level
-    {
+    public int Level {
         get { return level; }
     }
+
 }
-public enum SimpType
-{
+
+
+
+/* ----------------- TIPOS DISPONIBLES ----------------- */
+public enum SimpType {
     Normal,
     Fire,
     Water,
-   Electric,
+    Electric,
     Grass,
     Ice,
     Fighting,
@@ -127,10 +127,11 @@ public enum SimpType
     None
 }
 
-public class TypeChart
-{
-    static float [] [] chart = 
-    {
+
+/* ----------------- EFECTIVIDAD DE TIPOS ----------------- */
+public class TypeChart {
+
+    static float [] [] chart =  {
         //Has to be same order as PokemonType class
         //                       Nor   Fir   Wat   Ele   Gra   Ice   Fig   Poi   Gro   Fly   Psy   Bug   Roc   Gho   Dra   Dar  Ste    Fai
         /*Normal*/  new float[] {1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   0.5f, 0,    1f,   1f,   0.5f, 1f},
@@ -153,15 +154,20 @@ public class TypeChart
         /*Fairy*/   new float[] {1f,   0.5f, 1f,   1f,   1f,   1f,   2f,   0.5f, 1f,   1f,   1f,   1f,   1f,   1f,   2f,   2f,   0.5f, 1f},  
         
     };
-    public static float GetEffectiveness(SimpType attackType, SimpType defenseType)
-    {
-        if(attackType == SimpType.None || defenseType == SimpType.None)
-        {
+
+    public static float GetEffectiveness(SimpType attackType, SimpType defenseType) {
+
+        if( attackType == SimpType.None || defenseType == SimpType.None ) {
             return 1;
         }
+
         int row = (int) attackType;
         int col = (int) defenseType;
 
         return chart[row][col];
-    }   
+    }
+    
 }
+
+
+
