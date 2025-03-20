@@ -12,17 +12,17 @@ public enum BattleState { Start, ActionSelection, MoveSelection, PerformMove, Bu
 public class BattleSystem : MonoBehaviour
 {
     /* -------------------------------------------------------
->>>>>>>>> VARIABLES
--------------------------------------------------------  */
+    >>>>>>>>> VARIABLES
+    -------------------------------------------------------  */
     // UI
     [SerializeField] BattleUnit playerUnit;
-   [SerializeField] BattleUnit enemyUnit;
-   [SerializeField] BattleHud playerHud;
-   [SerializeField] BattleHud enemyHud;
-   [SerializeField] BattleDialogBox dialogBox;
-   [SerializeField] PartyScreen partyScreen;
-   [SerializeField] Image playerImage;
-   [SerializeField] Image trainerImage;
+    [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] BattleHud playerHud;
+    [SerializeField] BattleHud enemyHud;
+    [SerializeField] BattleDialogBox dialogBox;
+    [SerializeField] PartyScreen partyScreen;
+    [SerializeField] Image playerImage;
+    [SerializeField] Image trainerImage;
 
 
     public event Action<bool> OnBattleOver;
@@ -54,8 +54,8 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    public void StartTrainerBattle(SimpParty playerParty, SimpParty trainerParty)
-   {
+    public void StartTrainerBattle(SimpParty playerParty, SimpParty trainerParty) {
+
         this.playerParty = playerParty;
         this.trainerParty = trainerParty;
 
@@ -64,22 +64,23 @@ public class BattleSystem : MonoBehaviour
         trainer = trainerParty.GetComponent<TrainerController>();
         StartCoroutine(SetupBattle());
    }
-   public IEnumerator SetupBattle()
-   {
+
+   public IEnumerator SetupBattle() {
+
         playerUnit.Clear();
         enemyUnit.Clear();
 
-        if (!isTrainerBattle)
-        {
+        if (!isTrainerBattle) {
+
             //Wild Pokemon Battle
             playerUnit.Setup(playerParty.GetHealthySimp());
             enemyUnit.Setup(wildSimp);
 
             dialogBox.SetMoveNames(playerUnit.Simp.Moves);
             yield return dialogBox.TypeDialog($"A wild {enemyUnit.Simp.Base.Name} appeared. ");
+
         }
-        else
-        {
+        else {
             //Trainer Battle
 
             //Show Trainer and player sprites
@@ -198,11 +199,28 @@ public class BattleSystem : MonoBehaviour
         targetUnit.PlayHitAnimation();
         yield return new WaitForSeconds(1f);
 
-        var damageDetails = targetUnit.Simp.TakeDamage(move, sourceUnit.Simp);
-        yield return targetUnit.Hud.UpdateHP();
-        yield return ShowDamageDetails(damageDetails);
+        if (move.Base.Category == MoveCategory.Status) {
 
-        if (damageDetails.Fainted) {
+            var effect = move.Base.Effects;
+            if ( effect.Boosts != null ) {
+
+                if (move.Base.Target == MoveTarget.Self) {
+                    sourceUnit.Simp.ApplyBoosts(effect.Boosts);
+                }
+                else {
+                    targetUnit.Simp.ApplyBoosts(effect.Boosts);
+                }
+
+            }
+
+        }
+        else {
+            var damageDetails = targetUnit.Simp.TakeDamage(move, sourceUnit.Simp);
+            yield return targetUnit.Hud.UpdateHP();
+            yield return ShowDamageDetails(damageDetails);
+        }
+
+        if ( targetUnit.Simp.HP <= 0 ) {
 
             yield return dialogBox.TypeDialog($"{targetUnit.Simp.Base.Name} fainted");
             targetUnit.PlayFaintAnimation();
@@ -374,13 +392,11 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z)) {
 
             var selectedMember = playerParty.Simps[currentMember];
-            if(selectedMember.HP <= 0)
-            {
+            if(selectedMember.HP <= 0) {
                 partyScreen.SetMessageText("You can't send out a fainted SIMP");
                 return;
             }
-            if (selectedMember == playerUnit.Simp)
-            {
+            if (selectedMember == playerUnit.Simp) {
                 partyScreen.SetMessageText("You can't switch to the same SIMP");
                 return;
             }
@@ -389,15 +405,14 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.Busy;
             StartCoroutine(SwitchSimp(selectedMember));
         }
-        else if (Input.GetKeyDown (KeyCode.X))
-        {
+        else if (Input.GetKeyDown (KeyCode.X)) {
             partyScreen.gameObject.SetActive(false);
             ActionSelection();
         }
+
     }
 
-    IEnumerator SwitchSimp (Simp newSimp)
-    {
+    IEnumerator SwitchSimp (Simp newSimp) {
         yield return dialogBox.TypeDialog($"Come back  {playerUnit.Simp.Base.Name}!");
         playerUnit.PlayFaintAnimation();
         yield return new WaitForSeconds(2f);
@@ -412,8 +427,7 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    IEnumerator SendNextTrainerSimp (Simp nextSimp)
-    {
+    IEnumerator SendNextTrainerSimp (Simp nextSimp) {
         state = BattleState.Busy;
         enemyUnit.Setup(nextSimp);
         yield return dialogBox.TypeDialog($"{trainer.Name} send out {nextSimp.Base.Name}");

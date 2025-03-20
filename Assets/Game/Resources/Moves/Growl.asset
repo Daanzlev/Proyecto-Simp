@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 330a859c1a8a8984fbeae7fbbfed88f5, type: 3}
-  m_Name: Vine Whip
+  m_Name: Growl
   m_EditorClassIdentifier: 
-  name: Vine Whip
+  name: Growl
   description: 
-  type: 4
-  power: 46
-  accuracy: 75
-  pp: 56
-  category: 1
+  type: 0
+  power: 0
+  accuracy: 100
+  pp: 40
+  category: 2
   effects:
-    boosts: []
+    boosts:
+    - stat: 0
+      boost: -1
   target: 0
