@@ -116,7 +116,8 @@ public class BattleSystem : MonoBehaviour
 
         partyScreen.Init();
 
-        ActionSelection();
+        //ActionSelection();
+        ChooseFirstTurn();
 
     }
 
@@ -145,9 +146,18 @@ public class BattleSystem : MonoBehaviour
 
     }
 
+    void ChooseFirstTurn()
+    {
+        if (playerUnit.Simp.Speed >= enemyUnit.Simp.Speed)
+            ActionSelection();
+        else
+            StartCoroutine(EnemyMove());
+    }
+
     void BattleOver(bool win) {
 
         state = BattleState.BattleOver;
+        playerParty.Simps.ForEach(s => s.OnBattleOver());
         OnBattleOver(win);
 
     }
@@ -201,17 +211,7 @@ public class BattleSystem : MonoBehaviour
 
         if (move.Base.Category == MoveCategory.Status) {
 
-            var effect = move.Base.Effects;
-            if ( effect.Boosts != null ) {
-
-                if (move.Base.Target == MoveTarget.Self) {
-                    sourceUnit.Simp.ApplyBoosts(effect.Boosts);
-                }
-                else {
-                    targetUnit.Simp.ApplyBoosts(effect.Boosts);
-                }
-
-            }
+           yield return RunMoveEffects(move, sourceUnit.Simp, targetUnit.Simp);
 
         }
         else {
@@ -231,6 +231,34 @@ public class BattleSystem : MonoBehaviour
 
         }
 
+    }
+
+    IEnumerator RunMoveEffects(Move move, Simp source, Simp target) 
+    {
+        var effect = move.Base.Effects;
+        if (effect.Boosts != null)
+        {
+
+            if (move.Base.Target == MoveTarget.Self)
+            {
+                source.ApplyBoosts(effect.Boosts);
+            }
+            else
+            {
+                target.ApplyBoosts(effect.Boosts);
+            }
+            yield return ShowStatusChanges(source);
+            yield return ShowStatusChanges(target);
+        }
+    }
+
+    IEnumerator ShowStatusChanges(Simp simp)
+    {
+        while(simp.StatusChanges.Count > 0) 
+        { 
+            var message = simp.StatusChanges.Dequeue();
+            yield return dialogBox.TypeDialog(message);
+        }
     }
 
     IEnumerator PlayerMove() {
@@ -413,16 +441,25 @@ public class BattleSystem : MonoBehaviour
     }
 
     IEnumerator SwitchSimp (Simp newSimp) {
-        yield return dialogBox.TypeDialog($"Come back  {playerUnit.Simp.Base.Name}!");
-        playerUnit.PlayFaintAnimation();
-        yield return new WaitForSeconds(2f);
 
-        //playerUnit.Setup(newSimp);
+        bool currentSimpFainted = true;
+        if(playerUnit.Simp.HP > 0)
+        {
+            currentSimpFainted = false;
+            yield return dialogBox.TypeDialog($"Come back  {playerUnit.Simp.Base.Name}!");
+            playerUnit.PlayFaintAnimation();
+            yield return new WaitForSeconds(2f);
+        }
+
+        playerUnit.Setup(newSimp);
         //playerHud.SetData(newSimp);
-        //dialogBox.SetMoveNames(newSimp.Moves);
+        dialogBox.SetMoveNames(newSimp.Moves);
         yield return dialogBox.TypeDialog($"Go {newSimp.Base.Name}!");
 
-        StartCoroutine(EnemyMove());
+        if(currentSimpFainted) 
+            ChooseFirstTurn();
+        else
+            StartCoroutine(EnemyMove());
 
 
     }
