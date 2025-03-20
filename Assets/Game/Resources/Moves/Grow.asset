@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Grow
   description: 
-  type: 3
+  type: 0
   power: 95
   accuracy: 74
   pp: 38
+  category: 2
+  effects:
+    boosts:
+    - stat: 0
+      boost: -1
+  target: 0

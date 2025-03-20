@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 
@@ -27,6 +28,7 @@ public class Simp {
     public List<Move> Moves { get; set; }
 
     public Dictionary<Stat, int> Stats { get; private set; }
+    public Dictionary<Stat, int> StatBoosts { get; private set; }
 
 
     public int Attack {
@@ -74,6 +76,13 @@ public class Simp {
         CalculateStats();
 
         HP = MaxHP;
+        StatBoosts = new Dictionary<Stat, int>() {
+            {Stat.Attack, 0},
+            {Stat.Defense, 0},
+            {Stat.SpAttack, 0},
+            {Stat.SpDefense, 0},
+            {Stat.Speed, 0}
+        };
 
     }
 
@@ -95,9 +104,31 @@ public class Simp {
 
         int statVal = Stats[stat];
 
+        // Add Boost
+        int boost = StatBoosts[stat];
+        float[] boostValues = { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
 
+        if (boost >= 0) {
+            statVal = Mathf.FloorToInt( statVal * boostValues[boost] );
+        }
+        else {
+            statVal = Mathf.FloorToInt( statVal / boostValues[-boost] );
+        }
 
         return statVal;
+
+    }
+
+    public void ApplyBoosts( List<StatBoost> statBoosts  ) {
+
+        foreach (var statBoost in statBoosts) {
+
+            Stat stat = statBoost.stat;
+            int boost = statBoost.boost;
+
+            StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+
+        }
 
     }
 
@@ -117,8 +148,8 @@ public class Simp {
             Fainted = false
         };
 
-        float attack = (move.Base.IsSpecial) ? attacker.SpAttack : attacker.Attack;
-        float defense = (move.Base.IsSpecial) ? SpDefense : Defense;
+        float attack = (move.Base.Category == MoveCategory.Special) ? attacker.SpAttack : attacker.Attack;
+        float defense = (move.Base.Category == MoveCategory.Special) ? SpDefense : Defense;
 
         float modifiers = Random.Range(0.85f, 1f) *type * critical;
         float a = (2 * attacker.Level + 10) / 250f;      

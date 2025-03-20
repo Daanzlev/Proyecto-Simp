@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Scrstch
   description: 
-  type: 1
+  type: 0
   power: 85
   accuracy: 47
   pp: 45
+  category: 0
+  effects:
+    boosts: []
+  target: 0

@@ -1,10 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+/* ----------------- MENU ----------------- */
 [CreateAssetMenu(fileName = "Moves", menuName = "Simp/Create new Moves")]
-public class MoveBase : ScriptableObject
-{
+
+
+
+/* ----------------- MOVE BASE ----------------- */
+public class MoveBase : ScriptableObject {
+
+    /* ----------------- ATRIBUTOS ----------------- */
     [SerializeField] string name;
     [TextArea]
     [SerializeField] string description;
@@ -13,49 +22,97 @@ public class MoveBase : ScriptableObject
     [SerializeField] int power;
     [SerializeField] int accuracy;
     [SerializeField] int pp;
-    
-    public string Name 
-    {
+    [SerializeField] MoveCategory category;
+    [SerializeField] MoveEffects effects;
+    [SerializeField] MoveTarget target;
+
+
+
+    /* ----------------- GETTERS ----------------- */
+    public string Name {
         get { return name; }
     }
 
-    public string Description
-    {
+    public string Description {
         get { return description; }
     }
 
-    public SimpType Type
-    {
+    public SimpType Type {
         get { return type; }
     }
 
-    public int Power
-    {
+    public int Power {
         get { return power; }
     }
 
-    public int Accuracy
-    {
+    public int Accuracy {
         get { return accuracy; }
     }
     
-    public int PP
-    {
+    public int PP {
         get { return pp; }
     }
-    public bool IsSpecial
-    {
-        get { 
-            if ( type == SimpType.Fire || type == SimpType.Water 
-            || type == SimpType.Grass || type == SimpType.Electric || type == SimpType.Dragon)
-            
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }    
+
+    public MoveCategory Category {
+        get { return category; }
+    }
+
+    public MoveEffects Effects {
+        get { return effects; }
+    }
+
+    public MoveTarget Target {
+        get { return target; }
+    }
+
 }
+
+
+
+/* ----------------- CATERGORIAS ----------------- */
+[System.Serializable]
+public class MoveEffects {
+
+    /* ----------------- ATRIBUTOS ----------------- */
+    [SerializeField] List<StatBoost> boosts;
+
+
+
+    /* ----------------- ATRIBUTOS ----------------- */
+    public List<StatBoost> Boosts {
+        get { return boosts; }
+    }
+
+}
+
+
+
+/* ----------------- CATERGORIAS ----------------- */
+[System.Serializable]
+public class StatBoost {
+
+    /* ----------------- ATRIBUTOS ----------------- */
+    public Stat stat;
+    public int boost;
+
+
+}
+
+
+
+/* ----------------- CATERGORIAS ----------------- */
+public enum MoveCategory {
+    Physical,
+    Special,
+    Status
+}
+
+
+
+/* ----------------- CATERGORIAS ----------------- */
+public enum MoveTarget {
+    Enemy,
+    Self
+}
+
+
