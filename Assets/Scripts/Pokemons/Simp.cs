@@ -30,6 +30,8 @@ public class Simp {
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
 
+    public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
+
 
     public int Attack {
         get { return GetStat( Stat.Attack ); }
@@ -76,13 +78,8 @@ public class Simp {
         CalculateStats();
 
         HP = MaxHP;
-        StatBoosts = new Dictionary<Stat, int>() {
-            {Stat.Attack, 0},
-            {Stat.Defense, 0},
-            {Stat.SpAttack, 0},
-            {Stat.SpDefense, 0},
-            {Stat.Speed, 0}
-        };
+
+        ResetStatBoost();
 
     }
 
@@ -98,6 +95,17 @@ public class Simp {
 
         MaxHP = Mathf.FloorToInt( (Base.MaxHP * Level)/100f ) + 10;
 
+    }
+
+    void ResetStatBoost () 
+    {
+        StatBoosts = new Dictionary<Stat, int>() {
+            {Stat.Attack, 0},
+            {Stat.Defense, 0},
+            {Stat.SpAttack, 0},
+            {Stat.SpDefense, 0},
+            {Stat.Speed, 0}
+        };
     }
 
     int GetStat(Stat stat) {
@@ -128,6 +136,10 @@ public class Simp {
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
 
+            if (boost > 0)
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} rose!");
+            else
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} fell!");
         }
 
     }
@@ -172,7 +184,10 @@ public class Simp {
         return Moves[r];
     }
 
-
+    public void OnBattleOver()
+    {
+        ResetStatBoost();
+    }
 }
 
 
