@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace TESTING{
 public class TestFiles : MonoBehaviour
 {
     //private string fileName = "testFile.txt";// load file directly
@@ -22,4 +23,5 @@ public class TestFiles : MonoBehaviour
         }
         yield return null;
     }
+}
 }
