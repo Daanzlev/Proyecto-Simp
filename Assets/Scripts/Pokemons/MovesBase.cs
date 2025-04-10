@@ -75,7 +75,7 @@ public class MoveEffects {
 
     /* ----------------- ATRIBUTOS ----------------- */
     [SerializeField] List<StatBoost> boosts;
-
+    [SerializeField] ConditionID status;
 
 
     /* ----------------- ATRIBUTOS ----------------- */
@@ -83,6 +83,9 @@ public class MoveEffects {
         get { return boosts; }
     }
 
+    public ConditionID Status {
+        get { return status; } 
+    }
 }
 
 

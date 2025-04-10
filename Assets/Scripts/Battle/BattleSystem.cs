@@ -231,11 +231,27 @@ public class BattleSystem : MonoBehaviour
 
         }
 
+        //Statuses like burn or psn will hurt the pokemon after the turn
+        sourceUnit.Simp.OnAfterTurn();
+        yield return ShowStatusChanges(sourceUnit.Simp);
+        yield return sourceUnit.Hud.UpdateHP();
+        if (targetUnit.Simp.HP <= 0)
+        {
+
+            yield return dialogBox.TypeDialog($"{targetUnit.Simp.Base.Name} fainted");
+            targetUnit.PlayFaintAnimation();
+
+            yield return new WaitForSeconds(2f);
+
+            CheckForBattleOver(targetUnit);
+
+        }
     }
 
     IEnumerator RunMoveEffects(Move move, Simp source, Simp target) 
     {
         var effect = move.Base.Effects;
+        //Stat Boosting
         if (effect.Boosts != null)
         {
 
@@ -246,6 +262,11 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 target.ApplyBoosts(effect.Boosts);
+            }
+            //Status Condition
+            if(effect.Status != ConditionID.none) 
+            { 
+                target.SetStatus(effect.Status);
             }
             yield return ShowStatusChanges(source);
             yield return ShowStatusChanges(target);
