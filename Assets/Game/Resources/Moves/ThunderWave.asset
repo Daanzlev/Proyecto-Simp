@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 330a859c1a8a8984fbeae7fbbfed88f5, type: 3}
-  m_Name: PoisonPowder
+  m_Name: ThunderWave
   m_EditorClassIdentifier: 
-  name: Poison Powder
+  name: Thunder Wave
   description: 
-  type: 7
+  type: 3
   power: 0
   accuracy: 100
   pp: 20
   category: 2
   effects:
     boosts: []
-    status: 1
+    status: 4
   target: 0

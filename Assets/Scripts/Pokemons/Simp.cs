@@ -31,6 +31,7 @@ public class Simp {
     public Dictionary<Stat, int> StatBoosts { get; private set; }
 
     public Condition Status { get; private set; }
+    public int StatusTime { get; set; }
 
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged {  get; set; }
@@ -186,6 +187,7 @@ public class Simp {
     public void SetStatus(ConditionID conditionId) 
     {
         Status = ConditionsDB.Conditions[conditionId];
+        Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
     }
     public Move GetRandomMove() {
@@ -193,6 +195,19 @@ public class Simp {
         return Moves[r];
     }
 
+    public void CureStatus()
+    {
+        Status = null;
+    }
+
+    public bool OnBeforeMove()
+    {
+        if (Status?.OnBeforeMove != null)
+        {
+            return Status.OnBeforeMove(this);
+        }
+        return true;
+    }
     public void OnAfterTurn()
     {
         Status?.OnAfterTurn?.Invoke(this);
