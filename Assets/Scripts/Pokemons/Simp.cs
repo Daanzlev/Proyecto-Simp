@@ -86,6 +86,7 @@ public class Simp {
         ResetStatBoost();
 
     }
+    
 
     void CalculateStats() {
 
@@ -97,7 +98,7 @@ public class Simp {
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt( (Base.SpDefense * Level)/100f ) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt( (Base.Speed * Level)/100f ) + 5);
 
-        MaxHP = Mathf.FloorToInt( (Base.MaxHP * Level)/100f ) + 10;
+        MaxHP = Mathf.FloorToInt( (Base.MaxHP * Level)/100f ) + 10 + Level;
 
     }
 
@@ -186,6 +187,8 @@ public class Simp {
 
     public void SetStatus(ConditionID conditionId) 
     {
+
+        if ( Status != null) return; 
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
