@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 using UnityEngine;
 
 
@@ -26,40 +26,20 @@ public class Simp {
     /* ----------------- GETTERS ----------------- */
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
-
+    public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
 
     public Condition Status { get; private set; }
     public int StatusTime { get; set; }
+    public Condition VolatileStatus { get; private set; }
+    public int VolatileStatusTime { get; set; }
+
 
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged {  get; set; }
-
-
-    public int Attack {
-        get { return GetStat( Stat.Attack ); }
-    }
-
-    public int Defense {
-        get { return GetStat(Stat.Defense); }
-    }
-
-    public int SpAttack {
-        get { return GetStat(Stat.SpAttack); }
-    }
-
-    public int SpDefense {
-        get { return GetStat(Stat.SpDefense) ; }
-    }
-
-    public int Speed {
-        get { return GetStat(Stat.Speed); }
-    }
-
-    public int MaxHP { get; private set; } 
-
-
+    /* ----------------- ACTION  ----------------- */
+    public event System.Action OnStatusChanged;
 
     /* ----------------- METODOS ----------------- */
     public void Init() {
@@ -80,10 +60,11 @@ public class Simp {
         }
 
         CalculateStats();
-
         HP = MaxHP;
 
         ResetStatBoost();
+        Status = null;
+        VolatileStatus = null;
 
     }
     
@@ -109,7 +90,9 @@ public class Simp {
             {Stat.Defense, 0},
             {Stat.SpAttack, 0},
             {Stat.SpDefense, 0},
-            {Stat.Speed, 0}
+            {Stat.Speed, 0},
+            {Stat.Accuracy, 0},
+            {Stat.Evasion, 0},
         };
     }
 
@@ -119,7 +102,7 @@ public class Simp {
 
         // Add Boost
         int boost = StatBoosts[stat];
-        float[] boostValues = { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+        var boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
 
         if (boost >= 0) {
             statVal = Mathf.FloorToInt( statVal * boostValues[boost] );
@@ -146,8 +129,31 @@ public class Simp {
             else
                 StatusChanges.Enqueue($"{Base.Name}'s {stat} fell!");
         }
-
     }
+    // -------- Stats -----------
+      public int Attack {
+        get { return GetStat( Stat.Attack ); }
+    }
+
+    public int Defense {
+        get { return GetStat(Stat.Defense); }
+    }
+
+    public int SpAttack {
+        get { return GetStat(Stat.SpAttack); }
+    }
+
+    public int SpDefense {
+        get { return GetStat(Stat.SpDefense) ; }
+    }
+
+    public int Speed {
+        get { return GetStat(Stat.Speed); }
+    }
+
+    public int MaxHP { get; private set; } 
+
+    // -------------------
 
     public DamageDetails TakeDamage(Move move , Simp attacker) {
         
@@ -188,36 +194,60 @@ public class Simp {
     public void SetStatus(ConditionID conditionId) 
     {
 
-        if ( Status != null) return; 
+        if ( Status != null) { return;}
+        
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+        OnStatusChanged?.Invoke();
+    }
+    
+
+    public void CureStatus()
+    {
+        Status = null;
+        OnStatusChanged?.Invoke();
+    }
+    public void SetVolatileStatus(ConditionID conditionId) 
+    {
+        if (VolatileStatus != null) return;
+
+        VolatileStatus = ConditionsDB.Conditions[conditionId];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name} {VolatileStatus.StartMessage}");
+    }
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
     }
     public Move GetRandomMove() {
         int r = Random.Range(0, Moves.Count);
         return Moves[r];
     }
-
-    public void CureStatus()
-    {
-        Status = null;
-    }
-
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
         if (Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if (!Status.OnBeforeMove(this))
+                canPerformMove = false;
         }
-        return true;
+        if (VolatileStatus?.OnBeforeMove != null)
+        {
+            if (!VolatileStatus.OnBeforeMove(this))
+                canPerformMove = false;
+        }
+        return canPerformMove;
     }
     public void OnAfterTurn()
     {
         Status?.OnAfterTurn?.Invoke(this);
+        VolatileStatus?.OnAfterTurn?.Invoke(this);
     }
 
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoost();
     }
 }

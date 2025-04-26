@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Condition 
 {
+  public ConditionID Id { get; set; }
   public string Name { get; set; }
   public string Description { get; set; }
-
   public string StartMessage { get; set; }
+
+  
   public Action<Simp> OnStart {  get; set; }
   
   public Func<Simp, bool> OnBeforeMove { get; set; }

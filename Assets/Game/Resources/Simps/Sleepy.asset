@@ -10,22 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a3c29803bc4e6840ae59d5a90f97002, type: 3}
-  m_Name: Butterfree
+  m_Name: Sleepy
   m_EditorClassIdentifier: 
-  name: Butterfree
+  name: Sleepy
   description: 
-  frontSprite: {fileID: 21300000, guid: 179bd38ab997c7440844309bc52e708a, type: 3}
-  backSprite: {fileID: 21300000, guid: 653a6fe1d97188644a3747cd5e674bc4, type: 3}
-  type1: 11
-  type2: 9
-  maxhp: 60
+  frontSprite: {fileID: 21300000, guid: 8291ca3f1284dc84194ecce9be4d114f, type: 3}
+  backSprite: {fileID: 21300000, guid: 8291ca3f1284dc84194ecce9be4d114f, type: 3}
+  type1: 0
+  type2: 15
+  maxhp: 115
   attack: 45
-  defense: 50
-  spAttack: 90
-  spDefense: 80
-  speed: 70
+  defense: 20
+  spAttack: 45
+  spDefense: 20
+  speed: 20
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: cf81f6e8833776a42992d3a649502dfc, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: 7d50f26220b422f478c87391a24b1158, type: 2}
+  - moveBase: {fileID: 11400000, guid: 67b82898a8ee09a49906468bd8a7e6e3, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 493b82cb65599f24983cd8225cf8c9e1, type: 2}
     level: 10

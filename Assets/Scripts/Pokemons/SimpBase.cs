@@ -127,6 +127,18 @@ public enum SimpType {
     None
 }
 
+/* ----------------- Stats ----------------- */
+public enum Stat {
+    Attack,
+    Defense,
+    SpAttack,
+    SpDefense,
+    Speed,
+
+    // Boost
+    Accuracy,
+    Evasion
+}
 
 
 /* ----------------- EFECTIVIDAD DE TIPOS ----------------- */
@@ -172,15 +184,5 @@ public class TypeChart {
 
 
 
-/* ----------------- EFECTIVIDAD DE TIPOS ----------------- */
-public enum Stat {
-    Attack,
-    Defense,
-    SpAttack,
-    SpDefense,
-    Speed,
-    Accuracy,
-    Evasion
-}
 
 

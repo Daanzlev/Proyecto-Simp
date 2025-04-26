@@ -12,13 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330a859c1a8a8984fbeae7fbbfed88f5, type: 3}
   m_Name: Scratch
   m_EditorClassIdentifier: 
-  name: Scrstch
+  name: Scratch
   description: 
   type: 0
   power: 85
   accuracy: 47
+  alwaysHits: 0
   pp: 45
   category: 0
   effects:
     boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
   target: 0

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a3c29803bc4e6840ae59d5a90f97002, type: 3}
-  m_Name: Simp 1
+  m_Name: Ivysaur
   m_EditorClassIdentifier: 
   name: Ivysaur
   description: 
@@ -27,7 +27,7 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 6fa5487b757ace94db7c2469e27ce226, type: 2}
     level: 2
-  - moveBase: {fileID: 11400000, guid: 67b82898a8ee09a49906468bd8a7e6e3, type: 2}
+  - moveBase: {fileID: 11400000, guid: cf81f6e8833776a42992d3a649502dfc, type: 2}
     level: 12
   - moveBase: {fileID: 11400000, guid: 721aadf71624ce642a8b6e3844a40fea, type: 2}
     level: 2
