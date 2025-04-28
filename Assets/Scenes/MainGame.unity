@@ -14050,7 +14050,6 @@ GameObject:
   - component: {fileID: 1278265587}
   - component: {fileID: 1278265586}
   - component: {fileID: 1278265585}
-  - component: {fileID: 1278265584}
   - component: {fileID: 1278265583}
   - component: {fileID: 1278265582}
   - component: {fileID: 1278265589}
@@ -14108,26 +14107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
---- !u!114 &1278265584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1278265581}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f5125955b0ef24f957871f047a1d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog:
-    lines: []
-  movementPattern:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  timeBTWPattern: 3
 --- !u!61 &1278265585
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14287,6 +14266,9 @@ MonoBehaviour:
     lines:
     - 'Hey! I saw you against those SIMP. '
     - Mine are stronger!
+  dialogAfterBattle:
+    lines:
+    - Can't believe you defeated me!
   exclamation: {fileID: 360314152}
   fov: {fileID: 1712884392}
 --- !u!114 &1278265590
