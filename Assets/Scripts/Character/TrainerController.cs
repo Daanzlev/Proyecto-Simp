@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
-public class TrainerController : MonoBehaviour
+public class TrainerController : MonoBehaviour, Interactable
 {
     [SerializeField] string name;
     [SerializeField] Sprite sprite;
+    [SerializeField] Dialog dialog;
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject fov;
     Character character;
@@ -18,7 +20,18 @@ public class TrainerController : MonoBehaviour
     {
         SetFovRotation(character.Animator.DefaultDirection);
     }
-
+    public void Interact(Transform initiator)
+    {
+        
+        Debug.Log("Interacting with Trainer");
+        character.LookTowards(initiator.position);
+        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
+            {
+                GameController.Instance.StartTrainerBattle(this);
+            }));
+        //TriggerTrainerBattle(initiator.GetComponent<PlayerController>());
+    }
+   
     public IEnumerator TriggerTrainerBattle(PlayerController player)
     {
         //Show Exclamation
@@ -35,10 +48,19 @@ public class TrainerController : MonoBehaviour
 
         //Show dialogue
         Debug.Log("Starting Trainer Battle");
-        //Aqui tiene que ir el dialog system (startcoroutine)
-        GameController.Instance.StartTrainerBattle(this);
-    }
+        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
+        {
+            GameController.Instance.StartTrainerBattle(this);
+        }));
 
+        
+    }
+   
+    /*public void BattleLost()
+    {
+        battleLost = true;
+        fov.gameObject.SetActive(false);
+    }*/
     public void SetFovRotation(FacingDirection dir)
     {
         float angle = 0f;

@@ -18,6 +18,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] BattleDialogBox dialogBox;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] Image playerImage;
+    [SerializeField] Image trainerImage;
 
     public event Action<bool> OnBattleOver;
 
@@ -28,7 +30,12 @@ public class BattleSystem : MonoBehaviour
     int currentMember;
 
     SimpParty playerParty;
+    SimpParty trainerParty;
     Simp wildSimp;
+
+    bool isTrainerBattle = false;
+    PlayerController player;
+    TrainerController trainer;
     public void StartBattle(SimpParty playerParty, Simp wildSimp) {
 
         this.playerParty = playerParty;
@@ -39,27 +46,64 @@ public class BattleSystem : MonoBehaviour
 
     public void StartTrainerBattle(SimpParty playerParty, SimpParty trainerParty) {
 
-        /*this.playerParty = playerParty;
+        this.playerParty = playerParty;
         this.trainerParty = trainerParty;
 
         isTrainerBattle = true;
         player = playerParty.GetComponent<PlayerController>();
         trainer = trainerParty.GetComponent<TrainerController>();
-        StartCoroutine(SetupBattle());*/
+        StartCoroutine(SetupBattle());
    }
 
    public IEnumerator SetupBattle() {
+        playerUnit.Clear();
+        enemyUnit.Clear();
         
+        if (!isTrainerBattle) {
+            //WILD SIMP
+            playerUnit.Setup(playerParty.GetHealthySimp());
+            enemyUnit.Setup(wildSimp);
 
-        playerUnit.Setup(playerParty.GetHealthySimp());
-        enemyUnit.Setup(wildSimp);
+            dialogBox.SetMoveNames(playerUnit.Simp.Moves);
 
+            yield return dialogBox.TypeDialog($"A wild {wildSimp.Base.Name} appeared!");
+            
+        }
+        else 
+        {
+            //TRAINER BATTLE
+
+            //Showing sprites
+            playerUnit.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(false);
+
+            playerImage.gameObject.SetActive(true);
+            trainerImage.gameObject.SetActive(true);
+            playerImage.sprite = player.Sprite;
+            trainerImage.sprite = trainer.Sprite;
+
+            yield return dialogBox.TypeDialog($"{trainer.Name} wants to battle");
+
+            // Send out first pokemon of the trainer
+            trainerImage.gameObject.SetActive(false);
+            enemyUnit.gameObject.SetActive(true);
+            var enemySimp = trainerParty.GetHealthySimp();
+            enemyUnit.Setup(enemySimp);
+            yield return dialogBox.TypeDialog($"{trainer.Name} send out {enemySimp.Base.Name}");
+
+            // Send out first pokemon of the player
+            playerImage.gameObject.SetActive(false);
+            playerUnit.gameObject.SetActive(true);
+
+            var playerSimp = playerParty.GetHealthySimp();
+            playerUnit.Setup(playerSimp);
+            yield return dialogBox.TypeDialog($"Go {playerSimp.Base.Name}!");
+            dialogBox.SetMoveNames(playerUnit.Simp.Moves);
+
+           
+        }
+        
         partyScreen.Init();
-
-        dialogBox.SetMoveNames(playerUnit.Simp.Moves);
-
-        yield return dialogBox.TypeDialog($"A wild {enemyUnit.Simp.Base.Name} appeared.");
-
         ActionSelection();
 
     }
@@ -105,8 +149,16 @@ public class BattleSystem : MonoBehaviour
             playerUnit.Simp.CurrentMove = playerUnit.Simp.Moves[currentMove];
             enemyUnit.Simp.CurrentMove = enemyUnit.Simp.GetRandomMove();
 
+            
+            int playerMovePriority = playerUnit.Simp.CurrentMove.Base.Priority;
+            int enemyMovePriority = enemyUnit.Simp.CurrentMove.Base.Priority;
+
             // Check who goes first
-            bool playerGoesFirst = playerUnit.Simp.Speed >= enemyUnit.Simp.Speed;
+            bool playerGoesFirst = true;
+            if (enemyMovePriority > playerMovePriority)
+                playerGoesFirst = false;
+            else if (enemyMovePriority == playerMovePriority)
+                playerGoesFirst = playerUnit.Simp.Speed >= enemyUnit.Simp.Speed;
 
             var firstUnit = (playerGoesFirst) ? playerUnit : enemyUnit;
             var secondUnit = (playerGoesFirst) ? enemyUnit : playerUnit;
@@ -301,7 +353,7 @@ public class BattleSystem : MonoBehaviour
 
         }
         else {
-         /*   if(isTrainerBattle)
+           if(!isTrainerBattle)
             {
                 BattleOver(true);
             }
@@ -309,12 +361,13 @@ public class BattleSystem : MonoBehaviour
             {
                 var nextSimp = trainerParty.GetHealthySimp();
                 if(nextSimp != null)
+                    //Send out next SIMP
                    StartCoroutine(SendNextTrainerSimp(nextSimp));
                 else
                 {
                     BattleOver(true);
                 }
-            }*/
+            }
             BattleOver(true);
         }
 
@@ -440,6 +493,9 @@ public class BattleSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            var move = playerUnit.Simp.Moves[currentMove];
+            if (move.PP == 0) return;
+
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
             StartCoroutine(RunTurns(BattleAction.Move));
@@ -519,12 +575,12 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.RunningTurn;
     }
 
-   /* IEnumerator SendNextTrainerSimp (Simp nextSimp) {
+   IEnumerator SendNextTrainerSimp (Simp nextSimp) {
         state = BattleState.Busy;
         enemyUnit.Setup(nextSimp);
         yield return dialogBox.TypeDialog($"{trainer.Name} send out {nextSimp.Base.Name}");
 
-        //state = BattleState.RunningTurn;
-    }*/
+        state = BattleState.RunningTurn;
+    }
 
 }

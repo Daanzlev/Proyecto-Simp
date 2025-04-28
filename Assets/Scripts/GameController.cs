@@ -6,7 +6,8 @@ public enum GameState
 {
     FreeRoam,
     Battle,
-    Cutscene
+    Cutscene,
+    Dialog
 }
 
 public class GameController : MonoBehaviour
@@ -38,6 +39,16 @@ public class GameController : MonoBehaviour
                 state = GameState.Cutscene;
                 StartCoroutine(trainer.TriggerTrainerBattle(playerController));
             }
+        };
+        DialogManager.Instance.OnShowDialog += () =>
+        {
+            state = GameState.Dialog;
+        };
+
+        DialogManager.Instance.OnCloseDialog += () =>
+        {
+            if (state == GameState.Dialog)
+                state = GameState.FreeRoam;
         };
     }
 
@@ -82,6 +93,10 @@ public class GameController : MonoBehaviour
         else if (state == GameState.Battle)
         {
             battleSystem.HandleUpdate();
+        }
+        else if (state == GameState.Dialog)
+        {
+            DialogManager.Instance.HandleUpdate();
         }
     }
 }

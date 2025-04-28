@@ -7,25 +7,36 @@ public class NPC : MonoBehaviour, Interactable
     //public string[] dialogue;
     //public string name;
 
-
     //NPC Walkable
-
+    [SerializeField] Dialog dialog;
     [SerializeField] List<Vector2> movementPattern;
     [SerializeField] float timeBTWPattern;
     NPCState state;
     float idleTimer = 0f;
     int currentPattern = 0;
     Character character;
+
     private void Awake()
     {
         character = GetComponent<Character>();
     }
-    public void Interact()
+
+    public void Interact(Transform initiator)
+   
     {
         Debug.Log("Interacting with NPC");
-        //DialogueSystem.Instance.AddNewDialogue(dialogue, name);
-        // Test MOVE  - - StartCoroutine(character.Move(new Vector2(-2,0)));
+        if (state == NPCState.Idle)
+        {
+            state = NPCState.Dialog;
+            character.LookTowards(initiator.position);
+
+            StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () => {
+                idleTimer = 0f;
+                state = NPCState.Idle;
+            }));
+        }
     }
+
 
     private void Update()
     {
@@ -41,26 +52,26 @@ public class NPC : MonoBehaviour, Interactable
                     //state = NPCState.Walking;
                     StartCoroutine(Walk());
                 }
-                
             }
         }
         character.HandleUpdate();
     }
+
     IEnumerator Walk()
     {
         state = NPCState.Walking;
 
         var oldPos = transform.position;
 
-        yield  return character.Move(movementPattern[currentPattern]);
+        yield return character.Move(movementPattern[currentPattern]);
 
-        if(transform.position != oldPos)
+        if (transform.position != oldPos)
         {
             currentPattern = (currentPattern + 1) % movementPattern.Count;
         }
-        
+
         state = NPCState.Idle;
-        
     }
-    public enum NPCState{ Idle , Walking}
+
+    public enum NPCState { Idle, Walking, Dialog }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 
@@ -220,9 +221,12 @@ public class Simp {
     {
         VolatileStatus = null;
     }
-    public Move GetRandomMove() {
-        int r = Random.Range(0, Moves.Count);
-        return Moves[r];
+    public Move GetRandomMove() 
+    {
+        var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
+
+        int r = Random.Range(0, movesWithPP.Count);
+        return movesWithPP[r];
     }
     public bool OnBeforeMove()
     {
