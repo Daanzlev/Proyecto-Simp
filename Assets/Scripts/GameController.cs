@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
         var wildSimp = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildSimp();
         battleSystem.StartBattle(playerParty, wildSimp);
     }
-
+    TrainerController trainer;
     public void StartTrainerBattle(TrainerController trainer)
     {
         state = GameState.Battle;
@@ -71,6 +71,7 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(false);
         //playerController.enabled = false;
 
+        this.trainer = trainer;
         var playerParty = playerController.GetComponent<SimpParty>();
         var trainerParty = trainer.GetComponent<SimpParty>();
 
@@ -79,6 +80,11 @@ public class GameController : MonoBehaviour
 
     void EndBattle(bool won)
     {
+        if (trainer != null && won == true)
+        {
+            trainer.BattleLost();
+            trainer = null;
+        }
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);

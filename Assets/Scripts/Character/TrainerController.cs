@@ -8,9 +8,14 @@ public class TrainerController : MonoBehaviour, Interactable
     [SerializeField] string name;
     [SerializeField] Sprite sprite;
     [SerializeField] Dialog dialog;
+    [SerializeField] Dialog dialogAfterBattle;
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject fov;
+
+     // State
+    bool battleLost = false;
     Character character;
+
     private void Awake()
     {
         character = GetComponent<Character>();
@@ -25,11 +30,19 @@ public class TrainerController : MonoBehaviour, Interactable
         
         Debug.Log("Interacting with Trainer");
         character.LookTowards(initiator.position);
-        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
+
+        if (!battleLost)
+        {
+            StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
             {
                 GameController.Instance.StartTrainerBattle(this);
             }));
-        //TriggerTrainerBattle(initiator.GetComponent<PlayerController>());
+        }
+        else
+        {
+            StartCoroutine(DialogManager.Instance.ShowDialog(dialogAfterBattle));
+        }
+       
     }
    
     public IEnumerator TriggerTrainerBattle(PlayerController player)
@@ -56,11 +69,11 @@ public class TrainerController : MonoBehaviour, Interactable
         
     }
    
-    /*public void BattleLost()
+    public void BattleLost()
     {
         battleLost = true;
         fov.gameObject.SetActive(false);
-    }*/
+    }
     public void SetFovRotation(FacingDirection dir)
     {
         float angle = 0f;
