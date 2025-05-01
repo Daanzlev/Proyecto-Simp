@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel.Design;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, BattleOver, PerformMove}
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen,AboutToUse, BattleOver, PerformMove}
 public enum BattleAction { Move, SwitchSimp, UseItem, Run }
 
 
@@ -28,6 +28,7 @@ public class BattleSystem : MonoBehaviour
     int currentAction;
     int currentMove;
     int currentMember;
+    bool aboutToUseChoice = true;
 
     SimpParty playerParty;
     SimpParty trainerParty;
@@ -139,6 +140,14 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableDialogText(false);
         dialogBox.EnableMoveSelector(true);
 
+    }
+    IEnumerator AboutToUse(Simp newSimp)
+    {
+        state = BattleState.Busy;
+        yield return dialogBox.TypeDialog($"{trainer.Name} is about to use {newSimp.Base.Name}. Do you want to change SIMP?");
+
+        state = BattleState.AboutToUse;
+        dialogBox.EnableChoiceBox(true);
     }
     IEnumerator RunTurns(BattleAction playerAction)
     {
@@ -363,7 +372,7 @@ public class BattleSystem : MonoBehaviour
                 var nextSimp = trainerParty.GetHealthySimp();
                 if(nextSimp != null)
                     //Send out next SIMP
-                   StartCoroutine(SendNextTrainerSimp(nextSimp));
+                   StartCoroutine(AboutToUse(nextSimp));
                 else
                 {
                     BattleOver(true);
@@ -428,6 +437,10 @@ public class BattleSystem : MonoBehaviour
         else if(state == BattleState.PartyScreen)
         {
             HandlePartySelection();
+        }
+        else if (state == BattleState.AboutToUse)
+        {
+            HandleAboutToUse();
         }
 
     }
@@ -558,7 +571,35 @@ public class BattleSystem : MonoBehaviour
             ActionSelection();
         }
     }
-    
+     void HandleAboutToUse()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+            aboutToUseChoice = !aboutToUseChoice;
+
+        dialogBox.UpdateChoiceBox(aboutToUseChoice);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            dialogBox.EnableChoiceBox(false);
+            if (aboutToUseChoice == true)
+            {
+                // Yes Option
+                prevState = BattleState.AboutToUse;
+                OpenPartyScreen();
+            }
+            else
+            {
+                // No Option
+                StartCoroutine(SendNextTrainerSimp());
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            dialogBox.EnableChoiceBox(false);
+            StartCoroutine(SendNextTrainerSimp());
+        }
+    }
+
 
     IEnumerator SwitchSimp(Simp newSimp)
     {
@@ -576,8 +617,9 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.RunningTurn;
     }
 
-   IEnumerator SendNextTrainerSimp (Simp nextSimp) {
+   IEnumerator SendNextTrainerSimp () {
         state = BattleState.Busy;
+        var nextSimp = trainerParty.GetHealthySimp();
         enemyUnit.Setup(nextSimp);
         yield return dialogBox.TypeDialog($"{trainer.Name} send out {nextSimp.Base.Name}");
 
