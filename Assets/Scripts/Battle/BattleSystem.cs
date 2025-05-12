@@ -53,6 +53,7 @@ public class BattleSystem : MonoBehaviour
         isTrainerBattle = true;
         player = playerParty.GetComponent<PlayerController>();
         trainer = trainerParty.GetComponent<TrainerController>();
+
         StartCoroutine(SetupBattle());
    }
 
@@ -144,7 +145,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator AboutToUse(Simp newSimp)
     {
         state = BattleState.Busy;
-        yield return dialogBox.TypeDialog($"{trainer.Name} is about to use {newSimp.Base.Name}. Do you want to change SIMP?");
+        yield return dialogBox.TypeDialog($"{trainer.Name} is about to use {newSimp.Base.Name}. Do you want to change your Simp ?");
 
         state = BattleState.AboutToUse;
         dialogBox.EnableChoiceBox(true);
@@ -378,7 +379,7 @@ public class BattleSystem : MonoBehaviour
                     BattleOver(true);
                 }
             }
-            BattleOver(true);
+           // BattleOver(true);
         }
 
     }
@@ -567,8 +568,21 @@ public class BattleSystem : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
+            if (playerUnit.Simp.HP <= 0)
+            {
+                partyScreen.SetMessageText("You have to choose a Simp to continue");
+                return;
+            }
+
             partyScreen.gameObject.SetActive(false);
-            ActionSelection();
+
+            if (prevState == BattleState.AboutToUse)
+            {
+                prevState = null;
+                StartCoroutine(SendNextTrainerSimp());
+            }
+            else
+                ActionSelection();
         }
     }
      void HandleAboutToUse()
@@ -614,7 +628,15 @@ public class BattleSystem : MonoBehaviour
         dialogBox.SetMoveNames(newSimp.Moves);
         yield return dialogBox.TypeDialog($"Go {newSimp.Base.Name}!");
 
-        state = BattleState.RunningTurn;
+         if (prevState == null)
+        {
+            state = BattleState.RunningTurn;
+        }
+        else if (prevState == BattleState.AboutToUse)
+        {
+            prevState = null;
+            StartCoroutine(SendNextTrainerSimp());
+        }
     }
 
    IEnumerator SendNextTrainerSimp () {

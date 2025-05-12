@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a3c29803bc4e6840ae59d5a90f97002, type: 3}
-  m_Name: Sleepy
+  m_Name: Towpy
   m_EditorClassIdentifier: 
-  name: Sleepy
+  name: Towpy
   description: 
-  frontSprite: {fileID: 21300000, guid: 8291ca3f1284dc84194ecce9be4d114f, type: 3}
-  backSprite: {fileID: 21300000, guid: 8291ca3f1284dc84194ecce9be4d114f, type: 3}
-  type1: 0
+  frontSprite: {fileID: 21300000, guid: 464327b67cb79e7438aa3d8d035200cc, type: 3}
+  backSprite: {fileID: 21300000, guid: cb78ed3837071084dae8830e319c2e29, type: 3}
+  type1: 1
   type2: 15
-  maxhp: 115
-  attack: 45
-  defense: 20
-  spAttack: 45
-  spDefense: 20
-  speed: 20
+  maxhp: 39
+  attack: 64
+  defense: 43
+  spAttack: 60
+  spDefense: 50
+  speed: 65
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: cf81f6e8833776a42992d3a649502dfc, type: 2}
-    level: 1
-  - moveBase: {fileID: 11400000, guid: 67b82898a8ee09a49906468bd8a7e6e3, type: 2}
-    level: 1
-  - moveBase: {fileID: 11400000, guid: 493b82cb65599f24983cd8225cf8c9e1, type: 2}
     level: 10
+  - moveBase: {fileID: 11400000, guid: 67b82898a8ee09a49906468bd8a7e6e3, type: 2}
+    level: 2
+  - moveBase: {fileID: 11400000, guid: 5b2a19a42ea2a614184c43b3059011b8, type: 2}
+    level: 6

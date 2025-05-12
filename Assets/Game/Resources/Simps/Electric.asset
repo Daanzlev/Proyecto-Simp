@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Electricista
   description: 
-  frontSprite: {fileID: 21300000, guid: 9579048e285f7194589fa15d7f3631a0, type: 3}
-  backSprite: {fileID: 21300000, guid: bbf5cb9d36b818a44b206a593ded1c53, type: 3}
+  frontSprite: {fileID: 21300000, guid: c33794eee8b76b34b956c8072d256c0a, type: 3}
+  backSprite: {fileID: 21300000, guid: 3d8267592c415c945bae1ce03e6f09e6, type: 3}
   type1: 3
   type2: 0
   maxhp: 35

@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a3c29803bc4e6840ae59d5a90f97002, type: 3}
-  m_Name: Simp_Pkm
+  m_Name: Slempy
   m_EditorClassIdentifier: 
-  name: Demo Char
+  name: Slempy
   description: 
-  frontSprite: {fileID: 21300000, guid: cd259d9d4f8ba2749a16d1cc64d46bec, type: 3}
-  backSprite: {fileID: 21300000, guid: ed8e1d9976a1fd94d961840d8f6e7764, type: 3}
-  type1: 1
+  frontSprite: {fileID: 21300000, guid: 02c3d398fdcbd4045a06929042f99716, type: 3}
+  backSprite: {fileID: 21300000, guid: d5618a98a1c49ba4d9400b744f2b6029, type: 3}
+  type1: 0
   type2: 15
-  maxhp: 39
-  attack: 64
-  defense: 43
-  spAttack: 60
-  spDefense: 50
-  speed: 65
+  maxhp: 115
+  attack: 45
+  defense: 20
+  spAttack: 45
+  spDefense: 20
+  speed: 20
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: cf81f6e8833776a42992d3a649502dfc, type: 2}
-    level: 10
+    level: 1
   - moveBase: {fileID: 11400000, guid: 67b82898a8ee09a49906468bd8a7e6e3, type: 2}
-    level: 2
-  - moveBase: {fileID: 11400000, guid: 5b2a19a42ea2a614184c43b3059011b8, type: 2}
-    level: 6
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 493b82cb65599f24983cd8225cf8c9e1, type: 2}
+    level: 10
