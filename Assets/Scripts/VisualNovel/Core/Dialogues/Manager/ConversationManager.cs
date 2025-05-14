@@ -72,6 +72,15 @@ public class ConversationManager
 
     IEnumerator Line_RunCommands(Dialogue_Line line){
         Debug.Log(line.commands);
+        if (line.commands == "exit()"){
+            GameObject obj = GameObject.Find("VN Controller");
+            if (obj != null){
+                obj.SetActive(false);
+            }
+            else{
+                Debug.LogWarning("GameObject not found!");
+            }
+        }
         yield return null;
     }
 
