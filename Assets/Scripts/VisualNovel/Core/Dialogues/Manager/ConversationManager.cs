@@ -76,10 +76,16 @@ public class ConversationManager
             GameObject obj = GameObject.Find("VN Controller");
             if (obj != null){
                 obj.SetActive(false);
+                dialogueSystem.ShowBackGround(true);
+                dialogueSystem.ShowCharacter(true);
             }
             else{
                 Debug.LogWarning("GameObject not found!");
             }
+        }
+        if (line.commands == "clear()"){
+            dialogueSystem.ShowBackGround(false);
+            dialogueSystem.ShowCharacter(false);
         }
         yield return null;
     }

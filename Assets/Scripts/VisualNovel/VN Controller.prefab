@@ -173,6 +173,9 @@ MonoBehaviour:
     nameContainer:
       root: {fileID: 47766468441073471}
       nameText: {fileID: 1349338337692698897}
+    backAndCharContainer:
+      character: {fileID: 6747868164878455580}
+      background: {fileID: 5819655878577700473}
     dialogueText: {fileID: 2581023542007474408}
 --- !u!1 &1149484690728931432
 GameObject:
@@ -222,8 +225,8 @@ Canvas:
   m_GameObject: {fileID: 1149484690728931432}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 4092158624247569833}
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -975,7 +978,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1507,7 +1510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6878199248060033741
 Transform:
   m_ObjectHideFlags: 0

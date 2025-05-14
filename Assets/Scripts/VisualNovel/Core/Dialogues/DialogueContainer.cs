@@ -8,6 +8,7 @@ public class DialogueContainer
 {
     public GameObject root;
     public NameContainer nameContainer;
+    public BackAndCharContainer backAndCharContainer;
     public TextMeshProUGUI dialogueText;
 }
 }
