@@ -1,3 +1,5 @@
+clear()
+
 John "Hello World!" list(items -f long), playSong("Intro Song" -v 1)
 
 setScene("Classroom"-s 5.5)
