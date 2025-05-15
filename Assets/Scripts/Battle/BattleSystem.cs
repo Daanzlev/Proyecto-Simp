@@ -39,6 +39,8 @@ public class BattleSystem : MonoBehaviour
     bool isTrainerBattle = false;
     PlayerController player;
     TrainerController trainer;
+
+    int escapeAttempts;
     public void StartBattle(SimpParty playerParty, Simp wildSimp)
     {
 
@@ -112,6 +114,7 @@ public class BattleSystem : MonoBehaviour
 
         }
 
+        escapeAttempts = 0;
         partyScreen.Init();
         ActionSelection();
 
@@ -211,6 +214,10 @@ public class BattleSystem : MonoBehaviour
             {
                 dialogBox.EnableActionSelector(false);
                 yield return ThrowPokeball();
+            }
+            else if (playerAction == BattleAction.Run)
+            {
+                yield return TryToEscape();
             }
 
             // Enemy Turn
@@ -526,6 +533,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 3)
             {
                 //In progress
+                StartCoroutine(RunTurns(BattleAction.Run));
             }
 
         }
@@ -768,5 +776,44 @@ public class BattleSystem : MonoBehaviour
         }
 
         return shakeCount;
+    }
+
+    IEnumerator TryToEscape()
+    {
+        state = BattleState.Busy;
+
+        if (isTrainerBattle) 
+        {
+            yield return dialogBox.TypeDialog($"You can't run from trainer battles!");
+            state = BattleState.RunningTurn;
+            yield break;
+        }
+
+        ++escapeAttempts;
+
+        int playerSpeed = playerUnit.Simp.Speed;
+        int enemySpeed = enemyUnit.Simp.Speed;
+
+        if (enemySpeed < playerSpeed)
+        {
+            yield return dialogBox.TypeDialog($"Ran away safely!");
+            BattleOver(true);
+        }
+        else
+        {
+            float f = (playerSpeed * 128) / enemySpeed + 30 * escapeAttempts;
+            f = f % 256;
+
+            if (UnityEngine.Random.Range(0,256) < f)
+            {
+                yield return dialogBox.TypeDialog($"Ran away safely!");
+                BattleOver(true);
+            }
+            else
+            {
+                yield return dialogBox.TypeDialog($"Can't escape!");
+                state = BattleState.RunningTurn;
+            }
+        }
     }
 }
