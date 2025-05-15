@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.ComponentModel.Design;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen,AboutToUse, BattleOver, PerformMove}
 public enum BattleAction { Move, SwitchSimp, UseItem, Run }
@@ -20,6 +21,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage;
     [SerializeField] Image trainerImage;
+    [SerializeField] GameObject pokeballSprite; // This name will be changed later
 
     public event Action<bool> OnBattleOver;
 
@@ -37,15 +39,18 @@ public class BattleSystem : MonoBehaviour
     bool isTrainerBattle = false;
     PlayerController player;
     TrainerController trainer;
-    public void StartBattle(SimpParty playerParty, Simp wildSimp) {
+    public void StartBattle(SimpParty playerParty, Simp wildSimp)
+    {
 
         this.playerParty = playerParty;
         this.wildSimp = wildSimp;
+        player = playerParty.GetComponent<PlayerController>();
         StartCoroutine(SetupBattle());
 
     }
 
-    public void StartTrainerBattle(SimpParty playerParty, SimpParty trainerParty) {
+    public void StartTrainerBattle(SimpParty playerParty, SimpParty trainerParty)
+    {
 
         this.playerParty = playerParty;
         this.trainerParty = trainerParty;
@@ -55,13 +60,15 @@ public class BattleSystem : MonoBehaviour
         trainer = trainerParty.GetComponent<TrainerController>();
 
         StartCoroutine(SetupBattle());
-   }
+    }
 
-   public IEnumerator SetupBattle() {
+    public IEnumerator SetupBattle()
+    {
         playerUnit.Clear();
         enemyUnit.Clear();
-        
-        if (!isTrainerBattle) {
+
+        if (!isTrainerBattle)
+        {
             //WILD SIMP
             playerUnit.Setup(playerParty.GetHealthySimp());
             enemyUnit.Setup(wildSimp);
@@ -69,9 +76,9 @@ public class BattleSystem : MonoBehaviour
             dialogBox.SetMoveNames(playerUnit.Simp.Moves);
 
             yield return dialogBox.TypeDialog($"A wild {wildSimp.Base.Name} appeared!");
-            
+
         }
-        else 
+        else
         {
             //TRAINER BATTLE
 
@@ -102,15 +109,16 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"Go {playerSimp.Base.Name}!");
             dialogBox.SetMoveNames(playerUnit.Simp.Moves);
 
-           
+
         }
-        
+
         partyScreen.Init();
         ActionSelection();
 
     }
 
-    void BattleOver(bool win) {
+    void BattleOver(bool win)
+    {
 
         state = BattleState.BattleOver;
         playerParty.Simps.ForEach(s => s.OnBattleOver());
@@ -118,23 +126,26 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-     void ActionSelection() {
+    void ActionSelection()
+    {
 
         state = BattleState.ActionSelection;
         dialogBox.SetDialog("Choose an action");
         dialogBox.EnableActionSelector(true);
 
     }
-    
-    void OpenPartyScreen() {
+
+    void OpenPartyScreen()
+    {
 
         state = BattleState.PartyScreen;
         partyScreen.SetPartyData(playerParty.Simps);
         partyScreen.gameObject.SetActive(true);
 
     }
-    
-    void MoveSelection() {
+
+    void MoveSelection()
+    {
 
         state = BattleState.MoveSelection;
         dialogBox.EnableActionSelector(false);
@@ -159,7 +170,7 @@ public class BattleSystem : MonoBehaviour
             playerUnit.Simp.CurrentMove = playerUnit.Simp.Moves[currentMove];
             enemyUnit.Simp.CurrentMove = enemyUnit.Simp.GetRandomMove();
 
-            
+
             int playerMovePriority = playerUnit.Simp.CurrentMove.Base.Priority;
             int enemyMovePriority = enemyUnit.Simp.CurrentMove.Base.Priority;
 
@@ -196,6 +207,11 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.Busy;
                 yield return SwitchSimp(selectedSimp);
             }
+            else if (playerAction == BattleAction.UseItem)
+            {
+                dialogBox.EnableActionSelector(false);
+                yield return ThrowPokeball();
+            }
 
             // Enemy Turn
             var enemyMove = enemyUnit.Simp.GetRandomMove();
@@ -207,7 +223,7 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleState.BattleOver)
             ActionSelection();
     }
-    
+
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
         bool canRunMove = sourceUnit.Simp.OnBeforeMove();
@@ -265,8 +281,8 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"{sourceUnit.Simp.Base.Name}'s attack missed");
         }
     }
-    
-     IEnumerator RunMoveEffects(MoveEffects effects, Simp source, Simp target, MoveTarget moveTarget)
+
+    IEnumerator RunMoveEffects(MoveEffects effects, Simp source, Simp target, MoveTarget moveTarget)
     {
         // Stat Boosting
         if (effects.Boosts != null)
@@ -292,7 +308,7 @@ public class BattleSystem : MonoBehaviour
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
-    
+
     IEnumerator RunAfterTurn(BattleUnit sourceUnit)
     {
         if (state == BattleState.BattleOver) yield break;
@@ -312,10 +328,10 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
-   
+
     bool CheckIfMoveHits(Move move, Simp source, Simp target)
     {
-       if (move.Base.AlwaysHits)
+        if (move.Base.AlwaysHits)
             return true;
 
         float moveAccuracy = move.Base.Accuracy;
@@ -340,51 +356,57 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator ShowStatusChanges(Simp simp)
     {
-        while(simp.StatusChanges.Count > 0) 
-        { 
+        while (simp.StatusChanges.Count > 0)
+        {
             var message = simp.StatusChanges.Dequeue();
             yield return dialogBox.TypeDialog(message);
         }
     }
 
-    void CheckForBattleOver(BattleUnit faintedUnit) {
+    void CheckForBattleOver(BattleUnit faintedUnit)
+    {
 
         //If player SIMP fainted
-        if (faintedUnit.IsPlayerUnit) {
+        if (faintedUnit.IsPlayerUnit)
+        {
 
             var nextSimp = playerParty.GetHealthySimp();
 
             //If there is another SIMP
-            if (nextSimp != null) {
+            if (nextSimp != null)
+            {
                 OpenPartyScreen();
             }
-            else {
+            else
+            {
                 BattleOver(false);
             }
 
         }
-        else {
-           if(!isTrainerBattle)
+        else
+        {
+            if (!isTrainerBattle)
             {
                 BattleOver(true);
             }
             else
             {
                 var nextSimp = trainerParty.GetHealthySimp();
-                if(nextSimp != null)
+                if (nextSimp != null)
                     //Send out next SIMP
-                   StartCoroutine(AboutToUse(nextSimp));
+                    StartCoroutine(AboutToUse(nextSimp));
                 else
                 {
                     BattleOver(true);
                 }
             }
-           // BattleOver(true);
+            // BattleOver(true);
         }
 
     }
 
-    IEnumerator ShowDamageDetails(DamageDetails damageDetails) {
+    IEnumerator ShowDamageDetails(DamageDetails damageDetails)
+    {
 
         if (damageDetails.Critical > 1f)
             yield return dialogBox.TypeDialog("A critical hit!");
@@ -396,46 +418,49 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-  /*  IEnumerator PlayerMove() {
+    /*  IEnumerator PlayerMove() {
 
-        //Player Attack
-        state = BattleState.PerformMove;
-        var move = playerUnit.Simp.Moves[currentMove];
+          //Player Attack
+          state = BattleState.PerformMove;
+          var move = playerUnit.Simp.Moves[currentMove];
 
-        yield return RunMove(playerUnit, enemyUnit, move);
+          yield return RunMove(playerUnit, enemyUnit, move);
 
-        //If enemy SIMP has not fainted
-        if (state == BattleState.PerformMove) {
-            StartCoroutine(EnemyMove());
-        }
+          //If enemy SIMP has not fainted
+          if (state == BattleState.PerformMove) {
+              StartCoroutine(EnemyMove());
+          }
 
-    }
+      }
 
-    IEnumerator EnemyMove() {
+      IEnumerator EnemyMove() {
 
-        //Enemy Attack
-        state = BattleState.PerformMove;
-        var move = enemyUnit.Simp.GetRandomMove();
+          //Enemy Attack
+          state = BattleState.PerformMove;
+          var move = enemyUnit.Simp.GetRandomMove();
 
-        yield return RunMove(enemyUnit, playerUnit, move);
+          yield return RunMove(enemyUnit, playerUnit, move);
 
-        //If player SIMP has not fainted
-        if (state == BattleState.PerformMove) {
-            ActionSelection();
-        }
+          //If player SIMP has not fainted
+          if (state == BattleState.PerformMove) {
+              ActionSelection();
+          }
 
-    }
+      }
 
-    */
-    public void HandleUpdate() {
+      */
+    public void HandleUpdate()
+    {
 
-        if (state == BattleState.ActionSelection) {
+        if (state == BattleState.ActionSelection)
+        {
             HandleActionSelection();
         }
-        else if (state == BattleState.MoveSelection) {
+        else if (state == BattleState.MoveSelection)
+        {
             HandleMoveSelection();
         }
-        else if(state == BattleState.PartyScreen)
+        else if (state == BattleState.PartyScreen)
         {
             HandlePartySelection();
         }
@@ -443,47 +468,63 @@ public class BattleSystem : MonoBehaviour
         {
             HandleAboutToUse();
         }
+        //PRUEBAS
+        /*if (Input.GetKeyDown(KeyCode.T))
+        {
+            StartCoroutine(ThrowPokeball());
+        }*/
 
     }
 
-    void HandleActionSelection() {
+    void HandleActionSelection()
+    {
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))  {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
             ++currentAction;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
             --currentAction;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
             currentAction += 2;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
             currentAction -= 2;
         }
 
         currentAction = Mathf.Clamp(currentAction, 0, 3);
         dialogBox.UpdateActionSelection(currentAction);
 
-        if (Input.GetKeyDown(KeyCode.Z)) {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
 
             //Fight
-            if (currentAction == 0) {
+            if (currentAction == 0)
+            {
                 MoveSelection();
             }
 
             //Bag            
-            else if (currentAction == 1) {
+            else if (currentAction == 1)
+            {
                 //In progress
+                StartCoroutine(RunTurns(BattleAction.UseItem));
             }
 
             //SIMP party
-            else if (currentAction == 2) {
+            else if (currentAction == 2)
+            {
                 prevState = state;
                 OpenPartyScreen();
             }
 
             //Run
-            else if (currentAction == 3)  {
+            else if (currentAction == 3)
+            {
                 //In progress
             }
 
@@ -585,7 +626,7 @@ public class BattleSystem : MonoBehaviour
                 ActionSelection();
         }
     }
-     void HandleAboutToUse()
+    void HandleAboutToUse()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
             aboutToUseChoice = !aboutToUseChoice;
@@ -628,7 +669,7 @@ public class BattleSystem : MonoBehaviour
         dialogBox.SetMoveNames(newSimp.Moves);
         yield return dialogBox.TypeDialog($"Go {newSimp.Base.Name}!");
 
-         if (prevState == null)
+        if (prevState == null)
         {
             state = BattleState.RunningTurn;
         }
@@ -639,7 +680,8 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-   IEnumerator SendNextTrainerSimp () {
+    IEnumerator SendNextTrainerSimp()
+    {
         state = BattleState.Busy;
         var nextSimp = trainerParty.GetHealthySimp();
         enemyUnit.Setup(nextSimp);
@@ -648,4 +690,83 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.RunningTurn;
     }
 
+    IEnumerator ThrowPokeball()
+    {
+        state = BattleState.Busy;
+
+        if (isTrainerBattle)
+         {
+             yield return dialogBox.TypeDialog($"You can't steal the sidekicks SIMP!");
+             state = BattleState.RunningTurn;
+             yield break;
+         }
+
+        yield return dialogBox.TypeDialog($"{player.Name} used POKEBALL!");
+
+        var pokeballObj = Instantiate(pokeballSprite, playerUnit.transform.position - new Vector3(2, 0), Quaternion.identity);
+        var pokeball = pokeballObj.GetComponent<SpriteRenderer>();
+
+
+        // Animations
+        yield return pokeball.transform.DOJump(enemyUnit.transform.position + new Vector3(0, 2), 2f, 1, 1f).WaitForCompletion();
+        yield return enemyUnit.PlayCaptureAnimation();
+        yield return pokeball.transform.DOMoveY(enemyUnit.transform.position.y - 1.3f, 0.5f).WaitForCompletion();
+
+        int shakeCount = TryToCatchSimp(enemyUnit.Simp);
+
+        for (int i = 0; i < Mathf.Min(shakeCount, 3); ++i)
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return pokeball.transform.DOPunchRotation(new Vector3(0, 0, 10f), 0.8f).WaitForCompletion();
+        }
+
+        if (shakeCount == 4)
+        {
+            // Pokemon is caught
+            yield return dialogBox.TypeDialog($"{enemyUnit.Simp.Base.Name} was caught");
+            yield return pokeball.DOFade(0, 1.5f).WaitForCompletion();
+
+            playerParty.AddSimp(enemyUnit.Simp);
+            yield return dialogBox.TypeDialog($"{enemyUnit.Simp.Base.Name} has been added to your party");
+
+            Destroy(pokeball);
+            BattleOver(true);
+        }
+        else
+        {
+            // Pokemon broke out
+            yield return new WaitForSeconds(1f);
+            pokeball.DOFade(0, 0.2f);
+            yield return enemyUnit.PlayBreakOutAnimation();
+
+            if (shakeCount < 2)
+                yield return dialogBox.TypeDialog($"{enemyUnit.Simp.Base.Name} broke free");
+            else
+                yield return dialogBox.TypeDialog($"Almost caught it");
+
+            Destroy(pokeball);
+            state = BattleState.RunningTurn;
+        }
+
+    }
+    int TryToCatchSimp(Simp simp)
+    {
+        float a = (3 * simp.MaxHP - 2 * simp.HP) * simp.Base.CatchRate * ConditionsDB.GetStatusBonus(simp.Status) / (3 * simp.MaxHP);
+
+        if (a >= 255)
+            return 4;
+
+        float b = 1048560 / Mathf.Sqrt(Mathf.Sqrt(16711680 / a));
+
+        int shakeCount = 0;
+        while (shakeCount < 4)
+        {
+            if (UnityEngine.Random.Range(0, 65535) >= b)
+                break;
+
+            ++shakeCount;
+        }
+
+        return shakeCount;
+    }
 }

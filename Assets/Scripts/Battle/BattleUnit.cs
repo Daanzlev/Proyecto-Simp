@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 using System.Security.Permissions;
+using DG.Tweening;
 
-public class BattleUnit : MonoBehaviour {
+
+public class BattleUnit : MonoBehaviour
+{
 
     /* -------------------------------------------------------
     >>>>>>>>> VARIABLES
@@ -30,17 +32,20 @@ public class BattleUnit : MonoBehaviour {
     /* ---------------- GETTERS -----------------------------*/
     public Simp Simp { get; set; }
 
-    public bool IsPlayerUnit {
+    public bool IsPlayerUnit
+    {
         get { return isPlayerUnit; }
     }
 
-    public BattleHud Hud {
+    public BattleHud Hud
+    {
         get { return hud; }
     }
 
 
 
-    private void Awake() {
+    private void Awake()
+    {
 
         image = GetComponent<Image>();
         originalPos = image.transform.localPosition;
@@ -48,34 +53,41 @@ public class BattleUnit : MonoBehaviour {
 
     }
 
-    public void Setup(Simp simp)  {
+    public void Setup(Simp simp)
+    {
 
         Simp = simp;
 
-        if (isPlayerUnit) {
+        if (isPlayerUnit)
+        {
             image.sprite = Simp.Base.BackSprite;
         }
-        else  {
+        else
+        {
             image.sprite = Simp.Base.FrontSprite;
         }
         hud.gameObject.SetActive(true);
         hud.SetData(simp);
 
+        transform.localScale = new Vector3(1, 1, 1);
         image.color = originalColor;
         PlayEnterAnimation();
 
     }
-     public void Clear()
+    public void Clear()
     {
         hud.gameObject.SetActive(false);
     }
 
-    public void PlayEnterAnimation() {
+    public void PlayEnterAnimation()
+    {
 
-        if (isPlayerUnit) {
+        if (isPlayerUnit)
+        {
             image.transform.localPosition = new Vector3(-500, originalPos.y);
         }
-        else {
+        else
+        {
             image.transform.localPosition = new Vector3(500, originalPos.y);
         }
 
@@ -83,14 +95,17 @@ public class BattleUnit : MonoBehaviour {
 
     }
 
-    public void PlayAtackAnimation() {
+    public void PlayAtackAnimation()
+    {
 
         var sequence = DOTween.Sequence();
 
-        if (isPlayerUnit) {
+        if (isPlayerUnit)
+        {
             sequence.Append(image.transform.DOLocalMoveX(originalPos.x + 50, 0.25f));
         }
-        else {
+        else
+        {
             sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 50, 0.25f));
         }
 
@@ -98,7 +113,8 @@ public class BattleUnit : MonoBehaviour {
 
     }
 
-    public void PlayHitAnimation() {
+    public void PlayHitAnimation()
+    {
 
         var sequence = DOTween.Sequence();
 
@@ -107,12 +123,31 @@ public class BattleUnit : MonoBehaviour {
 
     }
 
-    public void PlayFaintAnimation() {
+    public void PlayFaintAnimation()
+    {
 
         var sequence = DOTween.Sequence();
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150, 0.5f));
         sequence.Join(image.DOFade(0, 0.5f));
 
+    }
+    
+    public IEnumerator PlayCaptureAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.DOFade(0, 0.5f));
+        sequence.Join(transform.DOLocalMoveY(originalPos.y + 50f, 0.5f));
+        sequence.Join(transform.DOScale(new Vector3(0.3f, 0.3f, 1f), 0.5f));
+        yield return sequence.WaitForCompletion();
+    }
+
+   public IEnumerator PlayBreakOutAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.DOFade(1, 0.5f));
+        sequence.Join(transform.DOLocalMoveY(originalPos.y, 0.5f));
+        sequence.Join(transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
+        yield return sequence.WaitForCompletion();
     }
 
 }

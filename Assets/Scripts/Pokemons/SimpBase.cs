@@ -5,7 +5,8 @@ using UnityEngine;
 /* ----------------- MENU ----------------- */
 [CreateAssetMenu(fileName = "Simp", menuName = "Simp/Create new Simp")]
 
-public class SimpBase : ScriptableObject {
+public class SimpBase : ScriptableObject
+{
 
     /* ----------------- ATRIBUTOS ----------------- */
     [SerializeField] string name;
@@ -26,63 +27,79 @@ public class SimpBase : ScriptableObject {
     [SerializeField] int spAttack;
     [SerializeField] int spDefense;
     [SerializeField] int speed;
+    [SerializeField] int catchRate = 255;
 
     [SerializeField] List<LearnableMove> learnableMoves;
 
 
 
     /* ----------------- GETTERS ----------------- */
-    public string Name  {
+    public string Name
+    {
         get { return name; }
     }
 
-    public string Description {
+    public string Description
+    {
         get { return description; }
     }
-    
-    public Sprite FrontSprite {
+
+    public Sprite FrontSprite
+    {
         get { return frontSprite; }
     }
 
-    public Sprite BackSprite {
+    public Sprite BackSprite
+    {
         get { return backSprite; }
     }
 
-    public SimpType Type1 {
+    public SimpType Type1
+    {
         get { return type1; }
     }
 
-    public SimpType Type2 {
+    public SimpType Type2
+    {
         get { return type2; }
     }
 
-    public int MaxHP {
+    public int MaxHP
+    {
         get { return maxhp; }
     }
 
-    public int Attack {
+    public int Attack
+    {
         get { return attack; }
     }
 
-    public int Defense {
+    public int Defense
+    {
         get { return defense; }
     }
 
-    public int SpAttack {
+    public int SpAttack
+    {
         get { return spAttack; }
     }
 
-    public int SpDefense {
+    public int SpDefense
+    {
         get { return spDefense; }
     }
 
-    public int Speed {
+    public int Speed
+    {
         get { return speed; }
     }
 
-    public List<LearnableMove> LearnableMoves {
+    public List<LearnableMove> LearnableMoves
+    {
         get { return learnableMoves; }
     }
+
+    public int CatchRate => catchRate;
 
 }
 

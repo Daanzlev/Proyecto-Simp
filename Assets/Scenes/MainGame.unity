@@ -8886,6 +8886,7 @@ MonoBehaviour:
   partyScreen: {fileID: 1099285666}
   playerImage: {fileID: 377409510}
   trainerImage: {fileID: 753339272}
+  pokeballSprite: {fileID: 4434564732682654767, guid: 191f0fcaf8efd5e48ab808ded686a1c2, type: 3}
 --- !u!1 &460830069
 GameObject:
   m_ObjectHideFlags: 0
@@ -15311,7 +15312,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -713937311
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1001 &1894896671

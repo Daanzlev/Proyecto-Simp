@@ -7,11 +7,12 @@ public class SimpParty : MonoBehaviour
 {
     [SerializeField] List<Simp> simps;
 
-    public List<Simp> Simps {
+    public List<Simp> Simps
+    {
         get { return simps; }
     }
 
-    private void Start ()
+    private void Start()
     {
         foreach (var simp in simps)
         {
@@ -21,6 +22,18 @@ public class SimpParty : MonoBehaviour
 
     public Simp GetHealthySimp()
     {
-       return simps.Where(x => x.HP > 0).FirstOrDefault();
+        return simps.Where(x => x.HP > 0).FirstOrDefault();
+    }
+    
+    public void AddSimp(Simp newSimp)
+    {
+        if (simps.Count < 6)
+        {
+            simps.Add(newSimp);
+        }
+        else
+        {
+            // TODO: Add to the PC once that's implemented
+        }
     }
 }
