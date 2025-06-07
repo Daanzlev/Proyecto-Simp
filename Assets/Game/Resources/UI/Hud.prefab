@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 4866697157245376216}
   - component: {fileID: 4052420934010967963}
   m_Layer: 0
-  m_Name: Hub
+  m_Name: Hud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,13 +187,13 @@ RectTransform:
   m_Children:
   - {fileID: 4297165002642712685}
   - {fileID: 5773028565149551757}
-  - {fileID: 4968890735716653636}
+  - {fileID: 2905198056742026602}
   - {fileID: 8895210981004551821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 633.63, y: -67}
+  m_AnchoredPosition: {x: 627, y: -58}
   m_SizeDelta: {x: 267.25, y: 91.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4504200391116470840
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 2357475438530853392}
   levelText: {fileID: 8990164013137304056}
-  statusText: {fileID: 6216002152490828144}
+  statusText: {fileID: 4584327063234895768}
   hpBar: {fileID: 1510819222056699814}
   psnColor: {r: 0.8962264, g: 0.3269253, b: 0.748382, a: 0}
   brnColor: {r: 0.94509804, g: 0.66710436, b: 0.33333337, a: 0}
@@ -447,7 +447,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 24.6253, y: -19.35}
+  m_AnchoredPosition: {x: 24.625298, y: -19.35}
   m_SizeDelta: {x: -97.2505, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9148183971930147744
@@ -580,7 +580,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: HP
---- !u!1 &8460982096371612087
+--- !u!1 &8176695692290739037
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -588,9 +588,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4968890735716653636}
-  - component: {fileID: 1173275177363208945}
-  - component: {fileID: 6216002152490828144}
+  - component: {fileID: 2905198056742026602}
+  - component: {fileID: 4948213538546814996}
+  - component: {fileID: 4584327063234895768}
   m_Layer: 0
   m_Name: StatusText
   m_TagString: Untagged
@@ -598,13 +598,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &4968890735716653636
+--- !u!224 &2905198056742026602
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8460982096371612087}
+  m_GameObject: {fileID: 8176695692290739037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.001105975}
   m_LocalScale: {x: 0.99997044, y: 0.99997044, z: 0.99997044}
@@ -614,31 +614,31 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -121.8705, y: -25.65}
-  m_SizeDelta: {x: 258.8614, y: 51.301}
+  m_AnchoredPosition: {x: -233, y: -32}
+  m_SizeDelta: {x: 174.6, y: 48.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &1173275177363208945
+--- !u!222 &4948213538546814996
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8460982096371612087}
+  m_GameObject: {fileID: 8176695692290739037}
   m_CullTransparentMesh: 1
---- !u!114 &6216002152490828144
+--- !u!114 &4584327063234895768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8460982096371612087}
+  m_GameObject: {fileID: 8176695692290739037}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9622642, g: 0.22241013, b: 0.8256858, a: 1}
+  m_Color: {r: 0.8679245, g: 0.13646607, b: 0.7893896, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -646,13 +646,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 4b8b6386a3ed9534ba5ba611634ce86b, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+    m_FontSize: 22
+    m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0

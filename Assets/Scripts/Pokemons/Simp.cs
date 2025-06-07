@@ -181,7 +181,13 @@ public class Simp {
         int damage = Mathf.FloorToInt(d * modifiers);
 
         UpdateHp(damage);
-
+         // 🔁 Recoil por Struggle
+        if (move.Base.Name == "Struggle")
+        {
+            int recoil = Mathf.FloorToInt(attacker.MaxHP * 0.25f);
+            attacker.UpdateHp(recoil);
+            attacker.StatusChanges.Enqueue($"{attacker.Base.Name} fue dañado por el retroceso.");
+        }
         return damageDetails;
 
     }
@@ -224,6 +230,11 @@ public class Simp {
     public Move GetRandomMove() 
     {
         var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
+         if (movesWithPP.Count == 0)
+        {
+            Debug.Log($"{Base.Name} no tiene movimientos con PP. Usará Struggle.");
+            return new Move(MoveBase.Struggle); // Usa la instancia de Struggle
+        }
 
         int r = Random.Range(0, movesWithPP.Count);
         return movesWithPP[r];

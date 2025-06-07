@@ -11,7 +11,9 @@ using UnityEngine;
 
 
 /* ----------------- MOVE BASE ----------------- */
-public class MoveBase : ScriptableObject {
+public class MoveBase : ScriptableObject
+{
+
 
     /* ----------------- ATRIBUTOS ----------------- */
     [SerializeField] string name;
@@ -34,50 +36,72 @@ public class MoveBase : ScriptableObject {
 
 
     /* ----------------- GETTERS ----------------- */
-    public string Name {
+    public string Name
+    {
         get { return name; }
     }
 
-    public string Description {
+    public string Description
+    {
         get { return description; }
     }
 
-    public SimpType Type {
+    public SimpType Type
+    {
         get { return type; }
     }
 
-    public int Power {
+    public int Power
+    {
         get { return power; }
     }
 
-    public int Accuracy {
+    public int Accuracy
+    {
         get { return accuracy; }
     }
-    
-    public bool AlwaysHits {
+
+    public bool AlwaysHits
+    {
         get { return alwaysHits; }
     }
-    public int PP {
+    public int PP
+    {
         get { return pp; }
     }
 
-    public int Priority {
+    public int Priority
+    {
         get { return priority; }
     }
-    
-    public MoveCategory Category {
+
+    public MoveCategory Category
+    {
         get { return category; }
     }
 
-    public MoveEffects Effects {
+    public MoveEffects Effects
+    {
         get { return effects; }
     }
 
-     public List<SecondaryEffects> Secondaries {
+    public List<SecondaryEffects> Secondaries
+    {
         get { return secondaries; }
     }
-    public MoveTarget Target {
+    public MoveTarget Target
+    {
         get { return target; }
+    }
+    
+    public static MoveBase Struggle { get; private set; }
+
+    [RuntimeInitializeOnLoadMethod]
+    static void Init()
+    {
+        Struggle = Resources.Load<MoveBase>("Moves/Struggle");
+        if (Struggle == null)
+            Debug.LogError("❌ No se pudo cargar el movimiento 'Struggle'.");
     }
 
 }
@@ -125,7 +149,8 @@ public class SecondaryEffects : MoveEffects
 
 /* ----------------- CATERGORIAS ----------------- */
 [System.Serializable]
-public class StatBoost {
+public class StatBoost
+{
 
     /* ----------------- ATRIBUTOS ----------------- */
     public Stat stat;
@@ -133,6 +158,7 @@ public class StatBoost {
 
 
 }
+
 
 
 

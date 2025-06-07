@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Electricista
   description: 
-  frontSprite: {fileID: 21300000, guid: c33794eee8b76b34b956c8072d256c0a, type: 3}
-  backSprite: {fileID: 21300000, guid: 3d8267592c415c945bae1ce03e6f09e6, type: 3}
+  frontSprite: {fileID: 7042406393940774731, guid: 48d761eec92a68743ae3f737eea5123e, type: 3}
+  backSprite: {fileID: -1386094857721561746, guid: ccd10a146f5e0ec4cb4307782eabe0c2, type: 3}
   type1: 3
   type2: 0
   maxhp: 35
@@ -24,14 +24,17 @@ MonoBehaviour:
   spAttack: 50
   spDefense: 50
   speed: 90
+  catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: cf81f6e8833776a42992d3a649502dfc, type: 2}
-    level: 12
+    level: 2
   - moveBase: {fileID: 11400000, guid: 67b82898a8ee09a49906468bd8a7e6e3, type: 2}
     level: 5
   - moveBase: {fileID: 11400000, guid: 7d50f26220b422f478c87391a24b1158, type: 2}
     level: 10
   - moveBase: {fileID: 11400000, guid: a877e2348bf25f94a9549686613a32a4, type: 2}
     level: 10
+  - moveBase: {fileID: 11400000, guid: 55b3bf032bfb54a469fb34c06d6b1503, type: 2}
+    level: 8
   - moveBase: {fileID: 11400000, guid: 93674b729d7a6df4a952052b0ac8529e, type: 2}
     level: 8

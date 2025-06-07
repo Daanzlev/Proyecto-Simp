@@ -16,6 +16,7 @@ public class BattleHud : MonoBehaviour
     [SerializeField] Color slpColor;
     [SerializeField] Color parColor;
     [SerializeField] Color frzColor;
+
     Simp _simp;
     Dictionary<ConditionID, Color> statusColors;
 
@@ -48,9 +49,10 @@ public class BattleHud : MonoBehaviour
         {
             statusText.text = "";
         }
+        //No esta entrando al else, no se porque
         else
         {
-            
+            statusText.text = "Hola";
             statusText.text = _simp.Status.Id.ToString().ToUpper();
             statusText.color = statusColors[_simp.Status.Id];
         }

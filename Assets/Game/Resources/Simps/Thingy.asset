@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a3c29803bc4e6840ae59d5a90f97002, type: 3}
-  m_Name: Simp 3
+  m_Name: Thingy
   m_EditorClassIdentifier: 
   name: Thingy
   description: 
@@ -24,10 +24,11 @@ MonoBehaviour:
   spAttack: 65
   spDefense: 65
   speed: 45
+  catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: cbc1b510a2ead874cb3c1ab2b08cf73e, type: 2}
     level: 6
   - moveBase: {fileID: 11400000, guid: 5b2a19a42ea2a614184c43b3059011b8, type: 2}
     level: 4
-  - moveBase: {fileID: 11400000, guid: 5b2a19a42ea2a614184c43b3059011b8, type: 2}
+  - moveBase: {fileID: 11400000, guid: 55b3bf032bfb54a469fb34c06d6b1503, type: 2}
     level: 10
