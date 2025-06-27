@@ -1,4 +1,5 @@
 using DIALOGUE;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,35 +10,58 @@ public class ImplementationTest : MonoBehaviour
     
     private GameObject VNsys;
 
+    public event Action OnShowVisualNovel;
+    public event Action OnCloseVisualNovel;
+
+    Action onDialogFinished = null;
+
+    public static ImplementationTest Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         GameObject obj = GameObject.Find("VN Controller");
-        if (obj != null){
+        if (obj != null)
+        {
             VNsys = obj;
             obj.SetActive(false);
         }
-        else{
+        else
+        {
             Debug.LogWarning("GameObject not found!");
         }
+        
+        DialogueSystem.instance.dialogueFinished += () =>
+        {
+            OnCloseVisualNovel?.Invoke();
+            onDialogFinished?.Invoke();
+            onDialogFinished = null;
+        };
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K)){
-            StartConversation();
-        }
     }
 
     // Update is called once per frame
-    void StartConversation()
+    public IEnumerator StartConversation(TextAsset dialog, Action onFinished=null)
     {
         if (VNsys != null){
+            OnShowVisualNovel?.Invoke();
             VNsys.SetActive(true);
-            List<string> lines = FileManager.ReadTextAsset(file, false);
+            List<string> lines = FileManager.ReadTextAsset(dialog, false);
             DialogueSystem.instance.Say(lines);
+            onDialogFinished = onFinished;
         }
         else{
             Debug.LogWarning("GameObject not found!");
         }
+        yield break;
     }
+
+    //Conversation but as a subscribable event
+
 }

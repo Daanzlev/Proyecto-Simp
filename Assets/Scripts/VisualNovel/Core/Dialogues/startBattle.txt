@@ -1,0 +1,7 @@
+clear()
+
+Trainer "Hey! I saw you against those SIMP."
+
+Trainer "Mine are stronger!"
+
+exit()

@@ -17,6 +17,8 @@ public class DialogueSystem : MonoBehaviour
     public delegate void DialogueSystemEvent();
     public event DialogueSystemEvent onUserPrompt_Next;
 
+    public event DialogueSystemEvent dialogueFinished;
+
     public bool isRunningConversation => conversationManager.isRunning;
 
     private void Awake(){
@@ -68,6 +70,10 @@ public class DialogueSystem : MonoBehaviour
 
     public void ShowCharacter(bool shown){
         dialogueContainer.backAndCharContainer.ShowCharacter(shown);
+    }
+    
+    public void triggerEndevent(){
+        dialogueFinished?.Invoke();
     }
 }
 }

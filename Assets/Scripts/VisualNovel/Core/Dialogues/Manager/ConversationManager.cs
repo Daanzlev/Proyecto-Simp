@@ -78,6 +78,8 @@ public class ConversationManager
                 obj.SetActive(false);
                 dialogueSystem.ShowBackGround(true);
                 dialogueSystem.ShowCharacter(true);
+                StopConversation();
+                dialogueSystem.triggerEndevent();
             }
             else{
                 Debug.LogWarning("GameObject not found!");

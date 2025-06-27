@@ -51,6 +51,15 @@ public class GameController : MonoBehaviour
             if (state == GameState.Dialog)
                 state = GameState.FreeRoam;
         };
+        ImplementationTest.Instance.OnShowVisualNovel += () =>
+        {
+            state = GameState.Dialog;
+        };
+        ImplementationTest.Instance.OnCloseVisualNovel += () =>
+        {
+            if (state == GameState.Dialog)
+                state = GameState.FreeRoam;
+        };
     }
 
     void StartBattle()
