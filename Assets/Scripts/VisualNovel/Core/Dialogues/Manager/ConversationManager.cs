@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace DIALOGUE{
 public class ConversationManager
@@ -72,7 +73,8 @@ public class ConversationManager
 
     IEnumerator Line_RunCommands(Dialogue_Line line){
         Debug.Log(line.commands);
-        if (line.commands == "exit()"){
+        string commandName = line.commands.Substring(0, line.commands.IndexOf('(')).Trim();
+        if (commandName == "exit"){
             GameObject obj = GameObject.Find("VN Controller");
             if (obj != null){
                 obj.SetActive(false);
@@ -85,9 +87,14 @@ public class ConversationManager
                 Debug.LogWarning("GameObject not found!");
             }
         }
-        if (line.commands == "clear()"){
+        if (commandName == "clear"){
             dialogueSystem.ShowBackGround(false);
             dialogueSystem.ShowCharacter(false);
+        }
+        if (commandName == "changeChar"){
+            int indexChange = 0;
+            Int32.TryParse(CommandGetSingleArgument(line.commands), out indexChange);
+            dialogueSystem.changeCharIndex(indexChange);
         }
         yield return null;
     }
@@ -113,6 +120,13 @@ public class ConversationManager
             yield return null;
         }
         userPrompt = false;
+    }
+
+    private string CommandGetSingleArgument(string command)
+    {
+        int parenthesisIndex = command.IndexOf('(');
+        string argument = command.Substring(parenthesisIndex + 1, command.Length - parenthesisIndex - 2);
+        return argument;
     }
 }
 }

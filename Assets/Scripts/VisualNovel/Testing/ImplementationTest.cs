@@ -46,7 +46,6 @@ public class ImplementationTest : MonoBehaviour
     {
     }
 
-    // Update is called once per frame
     public IEnumerator StartConversation(TextAsset dialog, Action onFinished=null)
     {
         if (VNsys != null){
@@ -62,6 +61,36 @@ public class ImplementationTest : MonoBehaviour
         yield break;
     }
 
+    public IEnumerator StartConversation(Dialog dialog, Action onFinished = null)
+    {
+        if (VNsys != null)
+        {
+            OnShowVisualNovel?.Invoke();
+            VNsys.SetActive(true);
+            List<string> lines = dialog.Lines;
+            DialogueSystem.instance.Say(lines);
+            onDialogFinished = onFinished;
+        }
+        else
+        {
+            Debug.LogWarning("GameObject not found!");
+        }
+        yield break;
+    }
     //Conversation but as a subscribable event
 
+    public void ChangeBackground(Texture newBackground)
+    {
+        DialogueSystem.instance.ChangeBackground(newBackground);
+    }
+
+    public void ChangeCharacter(Sprite newCharacter)
+    {
+        DialogueSystem.instance.ChangeCharacter(newCharacter);
+    }
+
+    public void setCharacterSprites(Sprite[] spriteSet)
+    {
+        DialogueSystem.instance.setCharacterSprites(spriteSet);
+    }
 }

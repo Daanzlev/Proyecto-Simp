@@ -75,5 +75,25 @@ public class DialogueSystem : MonoBehaviour
     public void triggerEndevent(){
         dialogueFinished?.Invoke();
     }
+
+    public void ChangeBackground(Texture newBackground)
+    {
+        dialogueContainer.backAndCharContainer.ChangeBackground(newBackground);
+    }
+
+    public void ChangeCharacter(Sprite newCharacter)
+    {
+        dialogueContainer.backAndCharContainer.ChangeCharacter(newCharacter);
+    }
+
+    public void setCharacterSprites(Sprite[] spriteSet)
+    {
+        dialogueContainer.backAndCharContainer.setCharacterSprites(spriteSet);
+    }
+
+    public void changeCharIndex(int index)
+    {
+        dialogueContainer.backAndCharContainer.changeCharIndex(index);
+    }
 }
 }

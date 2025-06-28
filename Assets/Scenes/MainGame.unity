@@ -561,9 +561,9 @@ GameObject:
   - component: {fileID: 330047992}
   - component: {fileID: 330047995}
   - component: {fileID: 330047994}
-  - component: {fileID: 330047996}
   - component: {fileID: 330047998}
   - component: {fileID: 330047997}
+  - component: {fileID: 330047999}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -710,28 +710,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &330047996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330047991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f5125955b0ef24f957871f047a1d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog:
-    lines:
-    - Hello! Where you from?
-    - "You shouldn't  mess with the other guy, he\xB4s mad"
-  movementPattern:
-  - {x: 2, y: 0}
-  - {x: 0, y: -2}
-  - {x: -2, y: 0}
-  - {x: 0, y: 2}
-  timeBTWPattern: 3
 --- !u!114 &330047997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,6 +756,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+--- !u!114 &330047999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330047991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f5125955b0ef24f957871f047a1d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialog:
+    lines:
+    - clear()
+    - '"Hello! Where you from?"'
+    - "\"You shouldn't  mess with the other guy, he\xB4s mad\""
+    - exit()
+  movementPattern:
+  - {x: 2, y: 0}
+  - {x: 0, y: -2}
+  - {x: -2, y: 0}
+  - {x: 0, y: 2}
+  timeBTWPattern: 3
 --- !u!1 &350148023
 GameObject:
   m_ObjectHideFlags: 0
@@ -14201,9 +14203,9 @@ GameObject:
   - component: {fileID: 1164395494}
   - component: {fileID: 1164395493}
   - component: {fileID: 1164395496}
-  - component: {fileID: 1164395491}
   - component: {fileID: 1164395490}
   - component: {fileID: 1164395489}
+  - component: {fileID: 1164395497}
   m_Layer: 10
   m_Name: Demonia
   m_TagString: Untagged
@@ -14257,24 +14259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
---- !u!114 &1164395491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164395488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f5125955b0ef24f957871f047a1d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog:
-    lines:
-    - Hello! Where you from?
-    - "You shouldn't  mess with the other guy, he\xB4s mad"
-  movementPattern: []
-  timeBTWPattern: 3
 --- !u!50 &1164395493
 Rigidbody2D:
   serializedVersion: 4
@@ -14414,6 +14398,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5198727, y: 1.9650569}
   m_EdgeRadius: 0
+--- !u!114 &1164395497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164395488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461e87f2bfdc207449141a83b0671565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialog:
+    lines:
+    - Demonia "Hello! Where you from?" changeChar(1)
+    - "Demonia \"You shouldn't  mess with the other guy, he\xB4s mad\""
+    - exit()
+  movementPattern: []
+  timeBTWPattern: 3
+  backgroundImage: {fileID: 2800000, guid: 5b05e0a705b857341bab7b5aff316630, type: 3}
+  characterSrpite:
+  - {fileID: 156479925253818802, guid: adf121bd7fa35614b974ead5e795aee5, type: 3}
+  - {fileID: -7437935782411114935, guid: 6ba6ebcc7e52bbd4495af433f1edf134, type: 3}
 --- !u!1001 &1173648141
 PrefabInstance:
   m_ObjectHideFlags: 0

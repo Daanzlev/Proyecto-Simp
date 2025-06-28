@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC : MonoBehaviour, Interactable
+public class NPCVNtest : MonoBehaviour, Interactable
 {
     //public string[] dialogue;
     //public string name;
@@ -11,6 +11,8 @@ public class NPC : MonoBehaviour, Interactable
     [SerializeField] Dialog dialog;
     [SerializeField] List<Vector2> movementPattern;
     [SerializeField] float timeBTWPattern;
+    [SerializeField] Texture backgroundImage;
+    [SerializeField] Sprite[] characterSrpite;
     NPCState state;
     float idleTimer = 0f;
     int currentPattern = 0;
@@ -22,7 +24,7 @@ public class NPC : MonoBehaviour, Interactable
     }
 
     public void Interact(Transform initiator)
-   
+
     {
         Debug.Log("Interacting with NPC");
         if (state == NPCState.Idle)
@@ -30,6 +32,9 @@ public class NPC : MonoBehaviour, Interactable
             state = NPCState.Dialog;
             character.LookTowards(initiator.position);
 
+            ImplementationTest.Instance.ChangeBackground(backgroundImage);
+            //ImplementationTest.Instance.ChangeCharacter(characterSrpite);
+            ImplementationTest.Instance.setCharacterSprites(characterSrpite);
             StartCoroutine(ImplementationTest.Instance.StartConversation(dialog, () => {
                 idleTimer = 0f;
                 state = NPCState.Idle;
