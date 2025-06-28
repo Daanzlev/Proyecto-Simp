@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+//using UnityEngine.TextCore.Text;
 
 public class TrainerController : MonoBehaviour, Interactable
 {
     [SerializeField] string name;
     [SerializeField] Sprite sprite;
-    [SerializeField] Dialog dialog;
-    [SerializeField] Dialog dialogAfterBattle;
+    [SerializeField] TextAsset dialog;
+    [SerializeField] TextAsset dialogAfterBattle;
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject fov;
 
@@ -38,14 +38,14 @@ public class TrainerController : MonoBehaviour, Interactable
 
         if (!battleLost)
         {
-            StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
+            StartCoroutine(ImplementationTest.Instance.StartConversation(dialog, () =>
             {
                 GameController.Instance.StartTrainerBattle(this);
             }));
         }
         else
         {
-            StartCoroutine(DialogManager.Instance.ShowDialog(dialogAfterBattle));
+            StartCoroutine(ImplementationTest.Instance.StartConversation(dialogAfterBattle));
         }
        
     }
@@ -66,7 +66,7 @@ public class TrainerController : MonoBehaviour, Interactable
 
         //Show dialogue
         Debug.Log("Starting Trainer Battle");
-        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
+        StartCoroutine(ImplementationTest.Instance.StartConversation(dialog, () =>
         {
             GameController.Instance.StartTrainerBattle(this);
         }));

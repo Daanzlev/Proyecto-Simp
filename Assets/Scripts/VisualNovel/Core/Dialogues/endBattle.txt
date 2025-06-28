@@ -1,0 +1,6 @@
+clear()
+
+Trainer "Can't believe you defeated me!
+"
+
+exit()
