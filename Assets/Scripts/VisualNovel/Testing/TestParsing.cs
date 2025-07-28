@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DIALOGUE;
 
+// Old test, can be removed, do not use
+
 namespace TESTING{
 public class TestParsing : MonoBehaviour
 {

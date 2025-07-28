@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-// Esto es la caja que contiene al objeto del backfround y del personaje para que se puedan modificar
+// This container has the sprite or sprites of the character as well as the background image, including the functions to interact with it
 namespace DIALOGUE{
     [System.Serializable]
     public class BackAndCharContainer
     {
-        [SerializeField] private Image character; //If there is more than one this would have to be implemented as a list? Check back on this
+        [SerializeField] private Image character;
         [SerializeField] private RawImage background;
 
-        private Sprite[] multipleCharSprites = {};
+        private Sprite[] multipleCharSprites = {}; // Used in case there are multiple sprites in a conversation
 
         public void ShowBackGround(bool shown) {
             background.gameObject.SetActive(shown);
@@ -39,9 +39,11 @@ namespace DIALOGUE{
             ChangeCharacter(multipleCharSprites[0]);
         }
 
+        // This unction is for changing the currently shown sprite if a list has been set
         public void changeCharIndex(int index)
         {
-            if(multipleCharSprites.Length == 0)
+            // Make sure there is a sprite list
+            if (multipleCharSprites.Length == 0)
             {
                 Debug.Log("No sprite set given yet");
                 return;

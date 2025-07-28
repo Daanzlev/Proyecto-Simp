@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+// This scipt is for parsing each of the lines given to the system
+// It aims to give out a name, dialgue and command for each given line, or just dialogue or just command if that is the case
+
 namespace DIALOGUE
 {
 public class DialogueParser
 {
+    // This funly regex is what allows to find the start of a command like command(
     private const string commandRegexPattern = "\\w*[^\\s]\\(";
 
     public static Dialogue_Line Parse(string rawLine){
-        Debug.Log($"Parsing line - '{rawLine}'");
+        //Debug.Log($"Parsing line - '{rawLine}'");
 
         (string speaker, string dialogue, string commands) = RipContent(rawLine);
 
-        Debug.Log($"Speaker = '{speaker}'\nDialogue = '{dialogue}'\nCommands ='{commands}'");
+        //Debug.Log($"Speaker = '{speaker}'\nDialogue = '{dialogue}'\nCommands ='{commands}'");
         
         return new Dialogue_Line(speaker, dialogue, commands);
     }
@@ -26,6 +30,7 @@ public class DialogueParser
         int dialogueEnd = -1;
         bool isEscaped = false;
 
+        // This for loop is for getting the index of where the dialogue starts and begins, designated by ""
         for(int i = 0; i <rawLine.Length; i++){
             char current = rawLine[i];
 
@@ -46,13 +51,14 @@ public class DialogueParser
             }
         }
 
-        // command pattern with regex
+        // command pattern with regex, here we look for when commands start
         Regex commandRegex = new Regex(commandRegexPattern);
         Match match = commandRegex.Match(rawLine);
         int commandStart = -1;
         if(match.Success){
             commandStart = match.Index;
 
+            // If there is no dialogue but we do have a command, treat the whole line as a command
             if(dialogueStart == -1 && dialogueEnd == -1){
                 return("", "", rawLine.Trim());
             }
@@ -67,9 +73,11 @@ public class DialogueParser
                 commands = rawLine.Substring(commandStart).Trim();
             }
         }
+        // Command before dialogue?
         else if (commandStart != -1 && dialogueStart > commandStart){
             commands = rawLine;
         }
+        // just the speaker name?
         else{
             speaker = rawLine;
         }
