@@ -8,7 +8,7 @@ using UnityEngine;
 public class ImplementationTest : MonoBehaviour
 {
     // This used to be loaded in by defautl for testing, can be removed
-    [SerializeField] private TextAsset file;
+    //[SerializeField] private TextAsset file;
 
     // This is the vn system object, maybe would be better to asign different on start()
     private GameObject VNsys;
@@ -40,7 +40,7 @@ public class ImplementationTest : MonoBehaviour
         {
             Debug.LogWarning("GameObject not found!");
         }
-        
+
         //Attach events to the finishing of a dialogue
         DialogueSystem.instance.dialogueFinished += () =>
         {
@@ -56,16 +56,18 @@ public class ImplementationTest : MonoBehaviour
 
 
     // The standard use of the dialogue system, uses txt file and can have an action after
-    public IEnumerator StartConversation(TextAsset dialog, Action onFinished=null)
+    public IEnumerator StartConversation(TextAsset dialog, Action onFinished = null)
     {
-        if (VNsys != null){
+        if (VNsys != null)
+        {
             OnShowVisualNovel?.Invoke();
             VNsys.SetActive(true);
             List<string> lines = FileManager.ReadTextAsset(dialog, false); // Read txt file into string list
             DialogueSystem.instance.Say(lines);
             onDialogFinished = onFinished; // Here we just assign the usage is attached on start() and ran on dialogueFinished on the DialogueSystem
         }
-        else{
+        else
+        {
             Debug.LogWarning("GameObject not found!");
         }
         yield break;
@@ -104,5 +106,29 @@ public class ImplementationTest : MonoBehaviour
     public void setCharacterSprites(Sprite[] spriteSet)
     {
         DialogueSystem.instance.setCharacterSprites(spriteSet);
+    }
+
+    // If the conversation is a multiple path one, use this function ----------------------------------------------
+    // By default it will grab the first one in the list
+    // It is required that if a path does not end in exit(), it ends on the option to change path, otherwise the system is stuck forever, check into this
+    public IEnumerator StartPathConversation(MultiplePathsVNContainer[] paths, Action onFinished = null)
+    {
+        if (paths.Length == 0)
+        {
+            Debug.LogWarning("There are no paths");
+            yield break;
+        }
+        if (VNsys == null)
+        {
+            Debug.LogWarning("GameObject not found!");
+            yield break;
+        }
+        OnShowVisualNovel?.Invoke();
+        VNsys.SetActive(true);
+        //change
+        DialogueSystem.instance.SayPathConversation(paths);
+        //till here
+        onDialogFinished = onFinished; // Here we just assign the usage is attached on start() and ran on dialogueFinished on the DialogueSystem
+        yield break;
     }
 }

@@ -65,10 +65,15 @@ public class DialogueSystem : MonoBehaviour
     public void Say(List<string> conversation){
         conversationManager.StartConversation(conversation);
     }
-
-    public void ShowBackGround(bool shown){
-        dialogueContainer.backAndCharContainer.ShowBackGround(shown);
+    
+    public void SayPathConversation(MultiplePathsVNContainer[] paths){
+        conversationManager.StartPathConversation(paths);
     }
+
+    public void ShowBackGround(bool shown)
+        {
+            dialogueContainer.backAndCharContainer.ShowBackGround(shown);
+        }
 
     public void ShowCharacter(bool shown){
         dialogueContainer.backAndCharContainer.ShowCharacter(shown);

@@ -10667,6 +10667,54 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4229784407815937888, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229784407815937888, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229784407815937888, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229784407815937888, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229784407815937888, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229784407815937888, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364611281056869985, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364611281056869985, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364611281056869985, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364611281056869985, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364611281056869985, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364611281056869985, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4580935080953527124, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -10695,6 +10743,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: VN Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 6997232486462486829, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6997232486462486829, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6997232486462486829, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6997232486462486829, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206946971463543017, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: buttonParent
+      value: 
+      objectReference: {fileID: 1614466459}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14205,6 +14273,7 @@ GameObject:
   - component: {fileID: 1164395496}
   - component: {fileID: 1164395490}
   - component: {fileID: 1164395489}
+  - component: {fileID: 1164395498}
   - component: {fileID: 1164395497}
   m_Layer: 10
   m_Name: Demonia
@@ -14405,7 +14474,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164395488}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 461e87f2bfdc207449141a83b0671565, type: 3}
   m_Name: 
@@ -14415,6 +14484,50 @@ MonoBehaviour:
     - Demonia "Hello! Where you from?" changeChar(1)
     - "Demonia \"You shouldn't  mess with the other guy, he\xB4s mad\""
     - exit()
+  movementPattern: []
+  timeBTWPattern: 3
+  backgroundImage: {fileID: 2800000, guid: 5b05e0a705b857341bab7b5aff316630, type: 3}
+  characterSrpite:
+  - {fileID: 156479925253818802, guid: adf121bd7fa35614b974ead5e795aee5, type: 3}
+  - {fileID: -7437935782411114935, guid: 6ba6ebcc7e52bbd4495af433f1edf134, type: 3}
+--- !u!114 &1164395498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164395488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2024519a85b6d2ced83eac97ed6c6556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paths:
+  - name: first
+    textFile: {fileID: 0}
+    dialog:
+      lines:
+      - pepe "First tist FR"
+      - choice()
+    pathOptions:
+    - pathName: second
+      buttonDialogue: this goes to second one
+    - pathName: third
+      buttonDialogue: this goes to third one
+  - name: second
+    textFile: {fileID: 0}
+    dialog:
+      lines:
+      - jose "wow this is the second one"
+      - exit()
+    pathOptions: []
+  - name: third
+    textFile: {fileID: 0}
+    dialog:
+      lines:
+      - alex "wow this is the third one"
+      - exit()
+    pathOptions: []
   movementPattern: []
   timeBTWPattern: 3
   backgroundImage: {fileID: 2800000, guid: 5b05e0a705b857341bab7b5aff316630, type: 3}
@@ -14836,7 +14949,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119f455337caff61d983d61921f04171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  file: {fileID: 4900000, guid: f391b8de24893f64e864611cc3e322d9, type: 3}
 --- !u!4 &1287628632
 Transform:
   m_ObjectHideFlags: 0
@@ -15147,6 +15259,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604698274}
   m_CullTransparentMesh: 1
+--- !u!1 &1614466459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6693735542792959434, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+  m_PrefabInstance: {fileID: 947810919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1614512620
 GameObject:
   m_ObjectHideFlags: 0
