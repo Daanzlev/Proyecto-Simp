@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 
@@ -17,6 +18,7 @@ public class MultiplePathsVNContainer
     {
         public string pathName;
         public string buttonDialogue;
+        public UnityEvent onChoose;
     }
 
     private void UseInput()

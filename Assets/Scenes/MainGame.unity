@@ -14509,23 +14509,71 @@ MonoBehaviour:
       lines:
       - pepe "First tist FR"
       - choice()
+      - exit()
     pathOptions:
     - pathName: second
       buttonDialogue: this goes to second one
+      onChoose:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1287628633}
+            m_TargetAssemblyTypeName: PathEventsTest, Assembly-CSharp
+            m_MethodName: LogMessage
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: aaaaa
+              m_BoolArgument: 0
+            m_CallState: 2
     - pathName: third
       buttonDialogue: this goes to third one
+      onChoose:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1287628633}
+            m_TargetAssemblyTypeName: PathEventsTest, Assembly-CSharp
+            m_MethodName: LogMessage
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: bbbbbbb
+              m_BoolArgument: 0
+            m_CallState: 2
   - name: second
     textFile: {fileID: 0}
     dialog:
       lines:
       - jose "wow this is the second one"
-      - exit()
-    pathOptions: []
+      - choice()
+    pathOptions:
+    - pathName: third
+      buttonDialogue: ' go third now'
+      onChoose:
+        m_PersistentCalls:
+          m_Calls: []
+    - pathName: Fourth
+      buttonDialogue: ' go foruthhh now'
+      onChoose:
+        m_PersistentCalls:
+          m_Calls: []
   - name: third
     textFile: {fileID: 0}
     dialog:
       lines:
       - alex "wow this is the third one"
+      - exit()
+    pathOptions: []
+  - name: Fourth
+    textFile: {fileID: 0}
+    dialog:
+      lines:
+      - alex "wow this is the 444444 one"
       - exit()
     pathOptions: []
   movementPattern: []
@@ -14930,6 +14978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1287628632}
   - component: {fileID: 1287628631}
+  - component: {fileID: 1287628633}
   m_Layer: 0
   m_Name: vntest
   m_TagString: Untagged
@@ -14964,6 +15013,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1287628633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287628630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637ec5070562bb63ebbc7aa6625d5114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1392007886
 GameObject:
   m_ObjectHideFlags: 0

@@ -214,6 +214,9 @@ public class ConversationManager
         {
             yield return null;
         }
+        
+        //If set run action
+        options[chosenIndex].onChoose?.Invoke();
 
         // Get the path name from the selected option
         string chosenPathName = options[chosenIndex].pathName;
