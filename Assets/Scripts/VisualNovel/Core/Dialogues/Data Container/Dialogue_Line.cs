@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This is the data type for a line in dialogue, it contains a speaker, dialogue and command
+
 namespace DIALOGUE
 {
 public class Dialogue_Line

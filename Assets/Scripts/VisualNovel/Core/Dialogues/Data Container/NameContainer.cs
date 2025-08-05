@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-// Esto es la caja que contiene el texto de nombre en la pantalla, parte del dialogue container
+// This container is speciffically for the name of the speaker in the dialogue box
+// It has its own section so it can be hidden, and if no name is given to the speaker it will hide by default
+
 namespace DIALOGUE{
 [System.Serializable]
 public class NameContainer

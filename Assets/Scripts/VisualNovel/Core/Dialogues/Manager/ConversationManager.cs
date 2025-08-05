@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace DIALOGUE{
 public class ConversationManager
@@ -12,6 +13,11 @@ public class ConversationManager
 
     private TextArchitect architect = null;
     private bool userPrompt = false;
+    
+    // Paths in case we have a multiple path convo:
+    private MultiplePathsVNContainer[] convoPaths= {};
+    private int currentPath = -1;
+    
     public ConversationManager(TextArchitect architect){
         this.architect = architect;
         dialogueSystem.onUserPrompt_Next += OnUserPrompt_Next; // The function in this class will happen when the even from Dialogue system happens
@@ -26,14 +32,38 @@ public class ConversationManager
 
         process = dialogueSystem.StartCoroutine(RunningConversation(conversation));
     }
+    
+    public void StartPathConversation(MultiplePathsVNContainer[] paths){
+        // paths[0].dialog.Lines
+        // Make paths available to all class
+        //convoPaths = paths;
+        convoPaths = new MultiplePathsVNContainer[paths.Length];
+        paths.CopyTo(convoPaths, 0);
+        currentPath = 0;
+        StartConversation(convoPaths[0].dialog.Lines);
+    }
 
-    public void StopConversation(){
-        if(!isRunning){
-            return;
+    // Meant for stopping the convo process
+    public void StopConversation()
+        {
+            if (!isRunning)
+            {
+                return;
+            }
+
+            dialogueSystem.StopCoroutine(process);
+            process = null;
         }
-
-        dialogueSystem.StopCoroutine(process);
-        process = null;
+    
+    // Meant as proper exit of the system
+    private void exitConvo(GameObject vnSys){
+        vnSys.SetActive(false);
+        dialogueSystem.ShowBackGround(true);
+        dialogueSystem.ShowCharacter(true);
+        Array.Clear(convoPaths, 0, convoPaths.Length);
+        currentPath = -1;
+        StopConversation();
+        dialogueSystem.triggerEndevent();
     }
 
     IEnumerator RunningConversation(List<string> conversation){
@@ -72,16 +102,12 @@ public class ConversationManager
     }
 
     IEnumerator Line_RunCommands(Dialogue_Line line){
-        Debug.Log(line.commands);
+        //Debug.Log(line.commands);
         string commandName = line.commands.Substring(0, line.commands.IndexOf('(')).Trim();
+        GameObject obj = GameObject.Find("VN Controller");
         if (commandName == "exit"){
-            GameObject obj = GameObject.Find("VN Controller");
             if (obj != null){
-                obj.SetActive(false);
-                dialogueSystem.ShowBackGround(true);
-                dialogueSystem.ShowCharacter(true);
-                StopConversation();
-                dialogueSystem.triggerEndevent();
+                exitConvo(obj);
             }
             else{
                 Debug.LogWarning("GameObject not found!");
@@ -95,6 +121,32 @@ public class ConversationManager
             int indexChange = 0;
             Int32.TryParse(CommandGetSingleArgument(line.commands), out indexChange);
             dialogueSystem.changeCharIndex(indexChange);
+        }
+        if (commandName == "changePath"){
+            string pathName = CommandGetSingleArgument(line.commands);
+            //Debug.Log(pathName);
+            bool exists = false;
+            int location = -1;
+            for (int i = 0; i < convoPaths.Length; i++)
+            {
+                if (convoPaths[i].name == pathName)
+                {
+                    exists = true;
+                    location = i;
+                    break;
+                }
+            }
+            
+            if (exists){
+                StartConversation(convoPaths[location].dialog.Lines);
+            }
+            else{
+                Debug.LogWarning("Path not found, exiting vn sys");
+                exitConvo(obj);
+            }
+        }
+        if (commandName == "choice"){
+            yield return Line_RunChoice();
         }
         yield return null;
     }
@@ -128,5 +180,61 @@ public class ConversationManager
         string argument = command.Substring(parenthesisIndex + 1, command.Length - parenthesisIndex - 2);
         return argument;
     }
+    
+    // The button handling
+    IEnumerator Line_RunChoice()
+    {
+        if (convoPaths.Length == 0 || convoPaths[currentPath].pathOptions.Length == 0)
+        {
+            Debug.LogWarning("No path options found.");
+            yield break;
+        }
+
+        MultiplePathsVNContainer.Choice[] options = convoPaths[currentPath].pathOptions;
+
+        // Extract the button dialogue
+        List<string> buttonTexts = new List<string>();
+        foreach (var option in options)
+        {
+            buttonTexts.Add(option.buttonDialogue);
+        }
+
+        bool choiceMade = false;
+        int chosenIndex = -1;
+
+        // Show buttons and wait for callback
+        ChoiceManager.instance.ShowChoices(buttonTexts, (index) =>
+        {
+            chosenIndex = index;
+            choiceMade = true;
+            ChoiceManager.instance.hide();
+        });
+
+        while (!choiceMade)
+        {
+            yield return null;
+        }
+        
+        //If set run action
+        options[chosenIndex].onChoose?.Invoke();
+
+        // Get the path name from the selected option
+        string chosenPathName = options[chosenIndex].pathName;
+
+        // Find and start that path
+        int pathIndex = Array.FindIndex(convoPaths, x => x.name == chosenPathName);
+        if (pathIndex != -1)
+        {
+            currentPath = pathIndex;
+            StartConversation(convoPaths[pathIndex].dialog.Lines);
+        }
+        else
+        {
+            Debug.LogWarning($"Path '{chosenPathName}' not found.");
+        }
+
+        yield return null;
+    }
+
 }
 }

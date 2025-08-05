@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Old test, can be removed, do not use
 namespace TESTING{
 public class TestFiles : MonoBehaviour
 {

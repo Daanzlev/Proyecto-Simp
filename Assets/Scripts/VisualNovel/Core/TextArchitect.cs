@@ -2,9 +2,12 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
+// The job of the TextArqchitect is handling the actual writing on the text box
+// The speed and way the text appears basically 
+
 public class TextArchitect
 {
-    // Could use Text mesh pro ui or world, no matter which it get assigned to tmpro
+    // Could use Text mesh pro ui or world, no matter which it get assigned to tmpro, this is the actual text object on the text box
     private TextMeshProUGUI tmpro_ui;
     private TextMeshPro tmpro_world;
     public TMP_Text tmpro => tmpro_ui != null ? tmpro_ui : tmpro_world;
@@ -13,12 +16,12 @@ public class TextArchitect
     public string currentText => tmpro.text;
     public string targetText {get; private set;} = "";
     public string preText {get; private set;} = "";
-    private int preTextLength = 0;
+    //private int preTextLength = 0; //Never used, honestly i dont remember why its here
 
     public string fullTargetText => preText + targetText;
 
     // DIfferent ways the text can appear
-    public enum BuildMethod {instant, typewriter, fade}
+    public enum BuildMethod {instant, typewriter} //Theres also fade but has not been implemented
     public BuildMethod buildMethod = BuildMethod.typewriter;
 
     //Color
@@ -81,14 +84,16 @@ public class TextArchitect
         Prepare();
 
         //Switch depending on how text appearing
+        // Instant does not require building, it just appears
         switch(buildMethod){
             case BuildMethod.typewriter:
             yield return Build_Typewriter();
             break;
 
-            case BuildMethod.fade:
-            yield return Build_Fade();
-            break;
+            //Not implemented
+            //case BuildMethod.fade:
+            //yield return Build_Fade();
+            //break;
         }
 
 
@@ -104,8 +109,9 @@ public class TextArchitect
             case BuildMethod.typewriter:
                 tmpro.maxVisibleCharacters = tmpro.textInfo.characterCount;
             break;
-            case BuildMethod.fade:
-            break;
+            //Not implemented
+            //case BuildMethod.fade:
+            //break;
         }
 
         Stop();
@@ -121,9 +127,10 @@ public class TextArchitect
             case BuildMethod.typewriter:
                 Prepare_Typewriter();
             break;
-            case BuildMethod.fade:
-                Prepare_Fade();
-            break;
+            //Not Implemented
+            //case BuildMethod.fade:
+            //    Prepare_Fade();
+            //break;
         }
     }
 
@@ -147,9 +154,11 @@ public class TextArchitect
         tmpro.text += targetText;
         tmpro.ForceMeshUpdate();
     }
-    private void Prepare_Fade(){
-        
-    }
+    
+    // Not implemented
+    //private void Prepare_Fade(){
+    //    
+    //}
 
     // Function for how to build on the different build modes
     private IEnumerator Build_Typewriter(){
@@ -159,7 +168,9 @@ public class TextArchitect
         }
         OnComplete();
     }
-    private IEnumerator Build_Fade(){
-        yield return null;
-    }
+    
+    //Not implemented
+    //private IEnumerator Build_Fade(){
+    //    yield return null;
+    //}
 }

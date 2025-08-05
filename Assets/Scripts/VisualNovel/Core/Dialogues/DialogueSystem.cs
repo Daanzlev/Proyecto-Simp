@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+// This script is where all the interfacing with the rest of the game is put into, it mostly interact with the conversation manager and dialogue container
+
 namespace DIALOGUE
 {
 public class DialogueSystem : MonoBehaviour
@@ -63,10 +65,15 @@ public class DialogueSystem : MonoBehaviour
     public void Say(List<string> conversation){
         conversationManager.StartConversation(conversation);
     }
-
-    public void ShowBackGround(bool shown){
-        dialogueContainer.backAndCharContainer.ShowBackGround(shown);
+    
+    public void SayPathConversation(MultiplePathsVNContainer[] paths){
+        conversationManager.StartPathConversation(paths);
     }
+
+    public void ShowBackGround(bool shown)
+        {
+            dialogueContainer.backAndCharContainer.ShowBackGround(shown);
+        }
 
     public void ShowCharacter(bool shown){
         dialogueContainer.backAndCharContainer.ShowCharacter(shown);
@@ -86,11 +93,13 @@ public class DialogueSystem : MonoBehaviour
         dialogueContainer.backAndCharContainer.ChangeCharacter(newCharacter);
     }
 
+    // This is used when having multiple sprites in a convo and is meant to be used with the changeChar(i) command in dialogue
     public void setCharacterSprites(Sprite[] spriteSet)
     {
         dialogueContainer.backAndCharContainer.setCharacterSprites(spriteSet);
     }
 
+    // This assumes a list of character sprites has been set to work
     public void changeCharIndex(int index)
     {
         dialogueContainer.backAndCharContainer.changeCharIndex(index);

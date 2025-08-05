@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+// The objective of this script is for handling the actual text files for use with the system
+// The system takes a list of strings for use, this makes it into that
+
 public class FileManager
 {
     // Theres 2 of this because in unity editor files are different than in final build ?

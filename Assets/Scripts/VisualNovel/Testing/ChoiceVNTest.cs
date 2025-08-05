@@ -1,15 +1,17 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 //This is a test for using the VN system with an NPC and multiple sprites, other than VN stuff its basically a copy of NPCController
-public class NPCVNtest : MonoBehaviour, Interactable
+public class ChoiceVNTest : MonoBehaviour, Interactable
 {
     //public string[] dialogue;
     //public string name;
 
     //NPC Walkable
-    [SerializeField] Dialog dialog;
+    //[SerializeField] Dialog dialog;
+    [SerializeField] MultiplePathsVNContainer[] paths;
     [SerializeField] List<Vector2> movementPattern;
     [SerializeField] float timeBTWPattern;
     [SerializeField] Texture backgroundImage;
@@ -34,9 +36,8 @@ public class NPCVNtest : MonoBehaviour, Interactable
             character.LookTowards(initiator.position);
 
             ImplementationTest.Instance.ChangeBackground(backgroundImage);
-            //ImplementationTest.Instance.ChangeCharacter(characterSrpite);
             ImplementationTest.Instance.setCharacterSprites(characterSrpite); // We assign the list before starting a convo and then change them with the changeChar(i) command
-            StartCoroutine(ImplementationTest.Instance.StartConversation(dialog, () =>
+            StartCoroutine(ImplementationTest.Instance.StartPathConversation(paths, () =>
             {
                 idleTimer = 0f;
                 state = NPCState.Idle;
@@ -82,3 +83,4 @@ public class NPCVNtest : MonoBehaviour, Interactable
 
     public enum NPCState { Idle, Walking, Dialog }
 }
+
