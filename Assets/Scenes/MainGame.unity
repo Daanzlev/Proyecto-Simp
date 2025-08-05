@@ -14421,10 +14421,10 @@ MonoBehaviour:
     - exit()
   movementPattern: []
   timeBTWPattern: 3
-  backgroundImage: {fileID: 2800000, guid: bf98dc1975fb6c144995c6a0ea1fa026, type: 3}
+  backgroundImage: {fileID: 2800000, guid: 5b05e0a705b857341bab7b5aff316630, type: 3}
   characterSrpite:
-  - {fileID: 21300000, guid: 7ac48b7c2754f5d40a5b3e44c709bdde, type: 3}
-  - {fileID: 21300000, guid: 1bc0ae249c6de904f8b2bbbcaedbdb38, type: 3}
+  - {fileID: -7437935782411114935, guid: 6ba6ebcc7e52bbd4495af433f1edf134, type: 3}
+  - {fileID: 156479925253818802, guid: adf121bd7fa35614b974ead5e795aee5, type: 3}
 --- !u!1001 &1173648141
 PrefabInstance:
   m_ObjectHideFlags: 0
