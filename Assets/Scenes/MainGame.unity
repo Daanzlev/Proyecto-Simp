@@ -10274,7 +10274,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4422032505096542742, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d6f75b42ee2427342a2dd58fe599a2eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10743,6 +10743,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VN Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 5196349797123896600, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6997232486462486829, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -10763,10 +10767,6 @@ PrefabInstance:
       propertyPath: buttonParent
       value: 
       objectReference: {fileID: 1614466459}
-    - target: {fileID: 5196349797123896600, guid: e17a84d8994b616eaa8a8f2180fa1125, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14492,6 +14492,7 @@ MonoBehaviour:
   timeBTWPattern: 3
   backgroundImage: {fileID: 2800000, guid: 5b05e0a705b857341bab7b5aff316630, type: 3}
   characterSrpite:
+  - {fileID: -7437935782411114935, guid: 6ba6ebcc7e52bbd4495af433f1edf134, type: 3}
   - {fileID: -7437935782411114935, guid: 6ba6ebcc7e52bbd4495af433f1edf134, type: 3}
 --- !u!114 &1164395498
 MonoBehaviour:

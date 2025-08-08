@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a3c29803bc4e6840ae59d5a90f97002, type: 3}
   m_Name: Electric
   m_EditorClassIdentifier: 
-  name: Electricista
+  name: Pems
   description: 
-  frontSprite: {fileID: 7042406393940774731, guid: 48d761eec92a68743ae3f737eea5123e, type: 3}
-  backSprite: {fileID: -1386094857721561746, guid: ccd10a146f5e0ec4cb4307782eabe0c2, type: 3}
+  frontSprite: {fileID: 21300000, guid: 4c14129954984e8449deebee1330dedf, type: 3}
+  backSprite: {fileID: 21300000, guid: 7d588f06490371142923e79652ce7f8e, type: 3}
   type1: 3
   type2: 0
   maxhp: 35
