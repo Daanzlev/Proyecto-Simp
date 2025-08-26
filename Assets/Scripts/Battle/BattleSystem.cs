@@ -47,6 +47,7 @@ public class BattleSystem : MonoBehaviour
         this.playerParty = playerParty;
         this.wildSimp = wildSimp;
         player = playerParty.GetComponent<PlayerController>();
+        isTrainerBattle = false;
         StartCoroutine(SetupBattle());
 
     }
@@ -275,11 +276,7 @@ public class BattleSystem : MonoBehaviour
 
             if (targetUnit.Simp.HP <= 0)
             {
-                yield return dialogBox.TypeDialog($"{targetUnit.Simp.Base.Name} Fainted");
-                targetUnit.PlayFaintAnimation();
-                yield return new WaitForSeconds(2f);
-
-                CheckForBattleOver(targetUnit);
+                yield return HandlePokemonFainted(targetUnit);
             }
 
         }
@@ -327,11 +324,7 @@ public class BattleSystem : MonoBehaviour
         yield return sourceUnit.Hud.UpdateHP();
         if (sourceUnit.Simp.HP <= 0)
         {
-            yield return dialogBox.TypeDialog($"{sourceUnit.Simp.Base.Name} Fainted");
-            sourceUnit.PlayFaintAnimation();
-            yield return new WaitForSeconds(2f);
-
-            CheckForBattleOver(sourceUnit);
+            yield return HandlePokemonFainted(sourceUnit);
             yield return new WaitUntil(() => state == BattleState.RunningTurn);
         }
     }
@@ -368,6 +361,39 @@ public class BattleSystem : MonoBehaviour
             var message = simp.StatusChanges.Dequeue();
             yield return dialogBox.TypeDialog(message);
         }
+    }
+
+    IEnumerator HandlePokemonFainted(BattleUnit faintedUnit)
+    {
+        yield return dialogBox.TypeDialog($"{faintedUnit.Simp.Base.Name} Fainted");
+        faintedUnit.PlayFaintAnimation();
+        yield return new WaitForSeconds(2f);
+
+        if (!faintedUnit.IsPlayerUnit) 
+        {
+            //Exp gain
+            int expYield = faintedUnit.Simp.Base.ExpYield;
+            int enemyLevel = faintedUnit.Simp.Level;
+            float trainerBonus = (isTrainerBattle) ? 1.5f : 1f;
+
+            int expGain = Mathf.FloorToInt((expYield * enemyLevel * trainerBonus)/7);
+            playerUnit.Simp.Exp += expGain;
+            yield return dialogBox.TypeDialog($"{playerUnit.Simp.Base.Name} gained {expGain} exp");
+            yield return playerUnit.Hud.SetExpSmooth();
+            //Check Level Up
+            while (playerUnit.Simp.CheckForLevelUp())
+            {
+                playerUnit.Hud.SetLevel();
+                yield return dialogBox.TypeDialog($"{playerUnit.Simp.Base.Name} grew to level {playerUnit.Simp.Level}");
+                yield return playerUnit.Hud.SetExpSmooth(true);
+
+            }
+
+            yield return new WaitForSeconds(1f);
+
+        }
+
+        CheckForBattleOver(faintedUnit);
     }
 
     void CheckForBattleOver(BattleUnit faintedUnit)

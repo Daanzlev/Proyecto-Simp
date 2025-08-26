@@ -25,6 +25,7 @@ public class Simp {
     }
 
     /* ----------------- GETTERS ----------------- */
+    public int Exp { get; set; }
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
@@ -59,6 +60,8 @@ public class Simp {
             }
 
         }
+
+        Exp = Base.GetExpForLevel(Level);
 
         CalculateStats();
         HP = MaxHP;
@@ -132,6 +135,16 @@ public class Simp {
         }
     }
     // -------- Stats -----------
+
+    public bool CheckForLevelUp()
+    {
+        if (Exp > Base.GetExpForLevel(level+1)) 
+        {
+            ++level;
+            return true;
+        }
+        return false;
+    }
       public int Attack {
         get { return GetStat( Stat.Attack ); }
     }
