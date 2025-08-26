@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class BattleHud : MonoBehaviour
     [SerializeField] Text levelText;
     [SerializeField] Text statusText;    
     [SerializeField] HPBar hpBar;
-
+    [SerializeField] GameObject expBar;
 
     [SerializeField] Color psnColor;
     [SerializeField] Color brnColor;
@@ -26,8 +27,9 @@ public class BattleHud : MonoBehaviour
         _simp = simp;
 
         nameText.text= simp.Base.Name;
-        levelText.text= "Lvl " + simp.Level;
+        SetLevel();
         hpBar.SetHP((float) simp.HP / simp.MaxHP);
+        SetExp();
 
         statusColors = new Dictionary<ConditionID, Color>()
         {
@@ -58,6 +60,36 @@ public class BattleHud : MonoBehaviour
         }
     }
 
+    public void SetLevel()
+    {
+        levelText.text = "Lvl " + _simp.Level;
+    }
+
+    public void SetExp()
+    {
+        if (expBar == null) return; 
+
+        float normalizedExp = GetNormalizedExp();
+        expBar.transform.localScale = new Vector3 (normalizedExp, 1, 1);
+    }
+    public IEnumerator SetExpSmooth(bool reset=false)
+    {
+        if (expBar == null) yield break;
+
+        if (reset)
+            expBar.transform.localScale = new Vector3(0, 1, 1);
+
+        float normalizedExp = GetNormalizedExp();
+        yield return expBar.transform.DOScaleX(normalizedExp, 1.5f).WaitForCompletion();
+    }
+    float GetNormalizedExp()
+    {
+        int currLevelExp = _simp.Base.GetExpForLevel(_simp.Level);
+        int nextLevelExp = _simp.Base.GetExpForLevel(_simp.Level + 1);
+
+        float normalizedExp = (float)(_simp.Exp - currLevelExp) / (nextLevelExp - currLevelExp);
+        return Mathf.Clamp01(normalizedExp);
+    }
     public IEnumerator UpdateHP()
     {
         if (_simp.HpChanged)
