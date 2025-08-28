@@ -385,6 +385,21 @@ public class BattleSystem : MonoBehaviour
             {
                 playerUnit.Hud.SetLevel();
                 yield return dialogBox.TypeDialog($"{playerUnit.Simp.Base.Name} grew to level {playerUnit.Simp.Level}");
+                var newMove = playerUnit.Simp.GetLearnableMoveAtCurrLevel();
+                if (newMove != null)
+                {
+                    if(playerUnit.Simp.Moves.Count < SimpBase.MaxNumOfMoves)
+                    {
+                        playerUnit.Simp.LearnMove(newMove);
+                        yield return dialogBox.TypeDialog($"{playerUnit.Simp.Base.Name} learned {newMove.Base.Name}");
+                        dialogBox.SetMoveNames(playerUnit.Simp.Moves);
+
+                    }
+                    else
+                    {
+
+                    }
+                }
                 yield return playerUnit.Hud.SetExpSmooth(true);
 
             }
