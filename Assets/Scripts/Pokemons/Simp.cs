@@ -55,7 +55,7 @@ public class Simp {
                 Moves.Add(new Move(move.Base));
             }
 
-            if (Moves.Count >= 4) {
+            if (Moves.Count >= SimpBase.MaxNumOfMoves) {
                 break;
             }
 
@@ -144,6 +144,20 @@ public class Simp {
             return true;
         }
         return false;
+    }
+
+    public LearnableMove GetLearnableMoveAtCurrLevel()
+    {
+        return Base.LearnableMoves.Where(x => x.Level == level).FirstOrDefault();
+    }
+
+    public void LearnMove(LearnableMove moveToLearn)
+    {
+        if(Moves.Count > SimpBase.MaxNumOfMoves) 
+        {
+            return;
+        }
+        Moves.Add(new Move(moveToLearn.Base));
     }
       public int Attack {
         get { return GetStat( Stat.Attack ); }
