@@ -29,9 +29,10 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        playerController.OnEncountered += StartBattle;
+       // Testiong refactoring playerController.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
 
+        /* tESTING REFACTORING, DON'T ERAESE THIS YET
         playerController.OnEnterTrainersView += (Collider2D trainerCollider) =>
         {
             var  trainer = trainerCollider.GetComponentInParent<TrainerController>();
@@ -44,7 +45,7 @@ public class GameController : MonoBehaviour
         DialogManager.Instance.OnShowDialog += () =>
         {
             state = GameState.Dialog;
-        };
+        };*/
 
         DialogManager.Instance.OnCloseDialog += () =>
         {
@@ -62,7 +63,7 @@ public class GameController : MonoBehaviour
         };
     }
 
-    void StartBattle()
+    public void StartBattle()
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
@@ -88,6 +89,11 @@ public class GameController : MonoBehaviour
         battleSystem.StartTrainerBattle(playerParty, trainerParty);
     }
 
+    public void OnEnterTrainersView(TrainerController trainer)
+    {
+        state = GameState.Cutscene;
+        StartCoroutine(trainer.TriggerTrainerBattle(playerController));
+    }
     void EndBattle(bool won)
     {
         if (trainer != null && won == true)
