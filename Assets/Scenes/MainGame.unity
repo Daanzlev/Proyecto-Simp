@@ -220,9 +220,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1621863635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125.005, y: -214.78499}
   m_SizeDelta: {x: 233.65, y: 71.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &93528247
@@ -9006,7 +9006,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &408116794
 Transform:
   m_ObjectHideFlags: 0
@@ -9142,7 +9142,7 @@ Transform:
   m_GameObject: {fileID: 460830069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.47, y: 0.54, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 0.9769, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9227,7 +9227,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.07099646}
+  m_Offset: {x: 0, y: 0.019764781}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: -0.17391305}
@@ -9238,7 +9238,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9075246, y: 1.3846966}
+  m_Size: {x: 0.9075246, y: 1.5662191}
   m_EdgeRadius: 0
 --- !u!50 &460830076
 Rigidbody2D:
@@ -9570,9 +9570,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1621863635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125.005, y: -97.76499}
   m_SizeDelta: {x: 233.65, y: 71.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &611396365
@@ -14529,9 +14529,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1621863635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125.005, y: -39.254997}
   m_SizeDelta: {x: 233.65, y: 71.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1158920860
@@ -14586,12 +14586,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1164395495}
   - component: {fileID: 1164395494}
-  - component: {fileID: 1164395493}
-  - component: {fileID: 1164395496}
   - component: {fileID: 1164395490}
   - component: {fileID: 1164395489}
   - component: {fileID: 1164395498}
   - component: {fileID: 1164395497}
+  - component: {fileID: 1164395500}
+  - component: {fileID: 1164395499}
   m_Layer: 10
   m_Name: Demonia
   m_TagString: Untagged
@@ -14645,33 +14645,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
---- !u!50 &1164395493
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164395488}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!212 &1164395494
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14733,57 +14706,12 @@ Transform:
   m_GameObject: {fileID: 1164395488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.73, y: 1.42, z: 0}
+  m_LocalPosition: {x: -12.5, y: -0.93, z: 0}
   m_LocalScale: {x: 0.63761, y: 0.63761, z: 0.63761}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1164395496
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164395488}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.063247144, y: -0.072511196}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0.125}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.6875, y: 2.0625}
-    newSize: {x: 1.6875, y: 2.0625}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.4841872, y: 2.0126362}
-  m_EdgeRadius: 0
 --- !u!114 &1164395497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14898,6 +14826,78 @@ MonoBehaviour:
   backgroundImage: {fileID: 2800000, guid: 5b05e0a705b857341bab7b5aff316630, type: 3}
   characterSrpite:
   - {fileID: -7437935782411114935, guid: 6ba6ebcc7e52bbd4495af433f1edf134, type: 3}
+--- !u!61 &1164395499
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164395488}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.08900893, y: -0.05722025}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0.125}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.6875, y: 2.0625}
+    newSize: {x: 1.6875, y: 2.0625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.5094821, y: 1.9480596}
+  m_EdgeRadius: 0
+--- !u!50 &1164395500
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164395488}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &1173648141
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15652,9 +15652,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1621863635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125.005, y: -273.29498}
   m_SizeDelta: {x: 233.65, y: 71.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1610079883
@@ -15827,9 +15827,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1621863635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125.005, y: -156.275}
   m_SizeDelta: {x: 233.65, y: 71.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1620182593
