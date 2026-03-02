@@ -7,7 +7,8 @@ public enum GameState
     FreeRoam,
     Battle,
     Cutscene,
-    Dialog
+    Dialog,
+    Paused
 }
 
 public class GameController : MonoBehaviour
@@ -17,6 +18,8 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
 
     GameState state;
+
+    GameState stateBeforePause;
 
     public static GameController Instance { get; private set; }
 
@@ -61,6 +64,19 @@ public class GameController : MonoBehaviour
             if (state == GameState.Dialog)
                 state = GameState.FreeRoam;
         };
+    }
+
+    public void PauseGame(bool pause)
+    {
+        if (pause)
+        {
+            stateBeforePause = state;
+            state = GameState.Paused;
+        }
+        else
+        {
+            state = stateBeforePause;
+        }
     }
 
     public void StartBattle()
