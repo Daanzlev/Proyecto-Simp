@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour
         //playerController.enabled = false;
 
         var playerParty = playerController.GetComponent<SimpParty>();
-        var wildSimp = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildSimp();
+        var wildSimp = CurrentScene.GetComponent<MapArea>().GetRandomWildSimp();
         battleSystem.StartBattle(playerParty, wildSimp);
     }
     TrainerController trainer;
