@@ -432,6 +432,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 62721870921852805, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074707484830860141, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4334005669769406354, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4533335139649233288, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
       propertyPath: m_Name
       value: EssentialObjects
@@ -474,6 +486,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5187435383854989067, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8719758438121954883, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026263669013529785, guid: a8dcc1b66f5f2b04f98e4046f17d4d02, type: 3}
+      propertyPath: m_CullTransparentMesh
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
