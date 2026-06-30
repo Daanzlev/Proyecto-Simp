@@ -28,9 +28,11 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        ConditionsDB.Init();
         Instance = this;
-        
+
+        SimpDB.Init();
+        MoveDB.Init();
+        ConditionsDB.Init();
     }
 
     private void Start()
