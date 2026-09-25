@@ -10,6 +10,7 @@ public class SimpParty : MonoBehaviour
     public List<Simp> Simps
     {
         get { return simps; }
+        set { simps = value; }
     }
 
     private void Start()

@@ -7,7 +7,9 @@ public enum GameState
     FreeRoam,
     Battle,
     Cutscene,
-    Dialog
+    Dialog,
+    Menu,
+    Paused
 }
 
 public class GameController : MonoBehaviour
@@ -18,13 +20,24 @@ public class GameController : MonoBehaviour
 
     GameState state;
 
+    GameState stateBeforePause;
+
+    public SceneDetails CurrentScene { get; private set; }
+    public SceneDetails PrevScene { get; private set; }
+
+    MenuController menuController;
+
     public static GameController Instance { get; private set; }
 
     private void Awake()
     {
-        ConditionsDB.Init();
         Instance = this;
-        
+
+        menuController = GetComponent<MenuController>();
+
+        SimpDB.Init();
+        MoveDB.Init();
+        ConditionsDB.Init();
     }
 
     private void Start()
@@ -45,7 +58,7 @@ public class GameController : MonoBehaviour
         DialogManager.Instance.OnShowDialog += () =>
         {
             state = GameState.Dialog;
-        };*/
+        }; */
 
         DialogManager.Instance.OnCloseDialog += () =>
         {
@@ -61,6 +74,26 @@ public class GameController : MonoBehaviour
             if (state == GameState.Dialog)
                 state = GameState.FreeRoam;
         };
+
+        menuController.onBack += () =>
+        {
+            state = GameState.FreeRoam;
+        };
+
+        menuController.onMenuSelected += OnMenuSelected;
+    }
+
+    public void PauseGame(bool pause)
+    {
+        if (pause)
+        {
+            stateBeforePause = state;
+            state = GameState.Paused;
+        }
+        else
+        {
+            state = stateBeforePause;
+        }
     }
 
     public void StartBattle()
@@ -71,7 +104,7 @@ public class GameController : MonoBehaviour
         //playerController.enabled = false;
 
         var playerParty = playerController.GetComponent<SimpParty>();
-        var wildSimp = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildSimp();
+        var wildSimp = CurrentScene.GetComponent<MapArea>().GetRandomWildSimp();
         battleSystem.StartBattle(playerParty, wildSimp);
     }
     TrainerController trainer;
@@ -111,6 +144,12 @@ public class GameController : MonoBehaviour
         if (state == GameState.FreeRoam)
         {
             playerController.HandleUpdate();
+
+            if (Input.GetKeyDown(KeyCode.Return)) 
+            {
+                menuController.OpenMenu();
+                state = GameState.Menu;
+            }
         }
         else if (state == GameState.Battle)
         {
@@ -120,5 +159,39 @@ public class GameController : MonoBehaviour
         {
             DialogManager.Instance.HandleUpdate();
         }
+        else if (state == GameState.Menu)
+        {
+            menuController.HandleUpdate();
+        }
+    }
+
+    public void SetCurrentScene(SceneDetails currScene)
+    {
+        PrevScene = CurrentScene;
+        CurrentScene = currScene;
+    }
+
+    void OnMenuSelected(int selectedItem)
+    {
+        if (selectedItem == 0)
+        { 
+            //Simp
+        }
+        else if (selectedItem == 1)
+        {
+            //Bag
+        }
+        else if (selectedItem == 2)
+        {
+            //Save
+            SavingSystem.i.Save("saveSlot1");
+        }
+        else if (selectedItem == 3)
+        {
+            //Load
+            SavingSystem.i.Load("saveSlot1");
+        }
+
+        state = GameState.FreeRoam;
     }
 }

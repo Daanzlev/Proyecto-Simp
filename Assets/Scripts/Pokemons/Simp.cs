@@ -58,7 +58,6 @@ public class Simp {
             if (Moves.Count >= SimpBase.MaxNumOfMoves) {
                 break;
             }
-
         }
 
         Exp = Base.GetExpForLevel(Level);
@@ -66,12 +65,46 @@ public class Simp {
         CalculateStats();
         HP = MaxHP;
 
+        StatusChanges = new Queue<string>();
         ResetStatBoost();
         Status = null;
         VolatileStatus = null;
-
     }
-    
+
+    public Simp(SimpSaveData saveData)
+    {
+        _base = SimpDB.GetSimpByName(saveData.name);
+        HP = saveData.hp;
+        level = saveData.level;
+        Exp = saveData.exp;
+
+        if (saveData.statusId != null)
+            Status = ConditionsDB.Conditions[saveData.statusId.Value];
+        else
+            Status = null;
+
+        Moves = saveData.moves.Select(s => new Move(s)).ToList();
+
+        CalculateStats();
+        StatusChanges = new Queue<string>();
+        ResetStatBoost();
+        VolatileStatus = null;
+    }
+
+    public SimpSaveData GetSaveData() 
+    {
+        var saveData = new SimpSaveData()
+        {
+            name = Base.Name,
+            hp = HP,
+            level = Level,
+            exp = Exp,
+            statusId = Status?.Id,
+            moves = Moves.Select(m => m.GetSaveData()).ToList()
+        };
+
+        return saveData;
+    }
 
     void CalculateStats() {
 
@@ -304,4 +337,14 @@ public class DamageDetails {
         
 }
 
+[System.Serializable]
+public class SimpSaveData
+{
+    public string name;
+    public int hp;
+    public int level;
+    public int exp;
+    public ConditionID? statusId;
+    public List<MoveSaveData> moves;
 
+}
